@@ -1,0 +1,29 @@
+@import "../../styles/variables.scss";
+
+.button {
+  border: 3px solid $brand;
+
+  padding: 10px 30px;
+  border-radius: 3px;
+  transition: all 0.1s linear;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $brand;
+  color: $brand-secondary;
+
+  &:hover {
+    background-color: $brand-hover;
+  }
+
+  &:disabled {
+    background-color: #b4acacd1;
+    color: $brand-secondary;
+    border: none;
+    cursor: default;
+    &:hover {
+      transform: none;
+    }
+  }
+}

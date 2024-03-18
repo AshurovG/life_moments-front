@@ -1,4 +1,66 @@
-.login__page {
+@import "../../styles/variables.scss";
+
+.auth__page {
   min-height: 100vh;
-  margin-top: 250px;
+  margin-top: 100px;
+
+  &-wrapper {
+    max-width: 400px;
+    border: $border;
+    border-radius: $border-radius;
+    margin: 0 auto;
+
+    background-color: $brand-secondary;
+    padding: 30px;
+  }
+
+  &-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: $brand-default;
+    text-align: center;
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    &-input {
+      border-radius: 5px;
+      border: 1px solid $brand;
+      height: 50px;
+      max-height: 50px;
+      text-align: left;
+      padding-left: 10px;
+      width: 100%;
+      font-size: 18px;
+
+      &-message {
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        left: 0;
+      }
+
+      &:focus {
+        border: 2px solid $brand;
+      }
+    }
+
+    &-btn {
+      width: 100%;
+      display: block;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    &-link {
+      display: block;
+      color: $brand;
+      text-decoration: underline;
+      margin-bottom: 5px;
+    }
+  }
 }
