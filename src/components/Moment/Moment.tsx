@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Moment.module.scss";
 import { MomentData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
 
 const Moment: React.FC<{ moment: MomentData }> = ({ moment }) => {
+  const [isAllCommentsVisible, setIsAllCommentsVisible] = useState(false);
+
   return (
     <div className={styles.moment}>
       <div className={styles.moment__wrapper}>
@@ -57,7 +59,7 @@ const Moment: React.FC<{ moment: MomentData }> = ({ moment }) => {
                   <div className={styles["moment__text"]}>
                     <div className={styles["moment__comments-caption"]}>
                       <h4 className={styles["moment__comments-username"]}>
-                        {moment.author.username}
+                        {moment.comments[0].author.username}
                       </h4>
                       <p className={styles["moment__comments-date"]}>
                         {moment.comments[0].date}
@@ -66,16 +68,55 @@ const Moment: React.FC<{ moment: MomentData }> = ({ moment }) => {
 
                     <p>{moment.comments[0].text}</p>
                     <p className={styles.moment__link}>Нравится: 2</p>
-                    <p
-                      style={{ cursor: "pointer" }}
-                      className={styles.moment__link}
-                    >
-                      Посмотреть все
-                    </p>
+                    {!isAllCommentsVisible && moment.comments.length > 1 && (
+                      <p
+                        style={{ cursor: "pointer" }}
+                        className={styles.moment__link}
+                        onClick={() => setIsAllCommentsVisible(true)}
+                      >
+                        Посмотреть все
+                      </p>
+                    )}
                   </div>
                 </div>
                 <HeartIcon width={22} height={22} />
               </div>
+
+              {isAllCommentsVisible &&
+                moment.comments.slice(1).map((comment, index) => (
+                  <div className={styles["moment__comments-item"]}>
+                    <div className={styles["moment__comments-wrapper"]}>
+                      <img
+                        className={styles["moment__comments-logo"]}
+                        src={moment.author.image}
+                        alt="user"
+                      />
+                      <div className={styles["moment__text"]}>
+                        <div className={styles["moment__comments-caption"]}>
+                          <h4 className={styles["moment__comments-username"]}>
+                            {comment.author.username}
+                          </h4>
+                          <p className={styles["moment__comments-date"]}>
+                            {comment.date}
+                          </p>
+                        </div>
+
+                        <p className={styles.moment__link}>Нравится: 2</p>
+                        {index + 2 == moment.comments?.length && (
+                          <p
+                            style={{ cursor: "pointer" }}
+                            className={styles.moment__link}
+                            onClick={() => setIsAllCommentsVisible(false)}
+                          >
+                            Скрыть
+                          </p>
+                        )}
+                        <div></div>
+                      </div>
+                    </div>
+                    <HeartIcon width={22} height={22} />
+                  </div>
+                ))}
             </>
           )}
         </div>

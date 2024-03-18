@@ -1,14 +1,15 @@
-import * as React from "react"
+import * as React from "react";
 
 export type IconProps = React.SVGAttributes<SVGElement> & {
-  className?: string
-  color?: "primary" | "secondary" | "accent"
-  width?: number
-  height?: number
-  children?: React.ReactNode
-  onClick?: () => void
-  fill?: string
-}
+  className?: string;
+  color?: "primary" | "secondary" | "accent";
+  width?: number;
+  height?: number;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  fill?: string;
+  flag?: boolean;
+};
 
 const Icon: React.FC<React.PropsWithChildren<IconProps>> = ({
   className,
@@ -29,7 +30,7 @@ const Icon: React.FC<React.PropsWithChildren<IconProps>> = ({
     >
       {children}
     </svg>
-  )
-}
+  );
+};
 
-export default Icon
+export default Icon;

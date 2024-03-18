@@ -46,6 +46,7 @@
   &__link {
     color: $brand-link;
     margin-top: 5px;
+    user-select: none;
   }
 
   &__image {
@@ -67,6 +68,11 @@
 
   &__comments {
     margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 
     &-item {
       display: flex;
