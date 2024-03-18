@@ -39,9 +39,9 @@ const LoginPage = () => {
               placeholder="Имя пользователя / почта*"
               type="text"
             />
-            {errors?.password && touchedFields.password && (
+            {errors?.username && touchedFields.username && (
               <div className={styles["auth__page-form-input-message"]}>
-                {errors?.password?.message?.toString()}
+                {errors?.username?.message?.toString()}
               </div>
             )}
           </div>
@@ -69,7 +69,7 @@ const LoginPage = () => {
             Войти
           </Button>
           <div>
-            <Link className={styles["auth__page-form-link"]} to="/">
+            <Link className={styles["auth__page-form-link"]} to="/registration">
               У вас еще нет аккаунта?
             </Link>
             <Link className={styles["auth__page-form-link"]} to="/login">
