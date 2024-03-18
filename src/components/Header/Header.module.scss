@@ -1,0 +1,33 @@
+@import "../../styles/variables.scss";
+
+.header {
+  width: 100%;
+  padding: 20px 0;
+  background-color: $brand-secondary;
+  color: $brand;
+  //   box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid $border-color;
+  //   position: fixed;
+
+  &__wrapper {
+    max-width: $content-width;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    &-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+}

@@ -3,10 +3,12 @@ import styles from "./App.module.scss";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "pages/LoginPage";
 import EventsFeedPage from "pages/EventsFeedPage";
+import Header from "components/Header";
 
 function App() {
   return (
     <div className={styles.app}>
+      <Header />
       <HashRouter>
         <Routes>
           <Route path="/events" element={<EventsFeedPage />} />
