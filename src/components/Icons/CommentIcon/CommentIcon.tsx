@@ -4,8 +4,8 @@ import { IconProps } from "../Icon";
 const CommentIcon: React.FC<IconProps> = ({ onClick }) => {
   return (
     <svg
-      width={25}
-      height={25}
+      width={22}
+      height={22}
       onClick={onClick}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 512 512"

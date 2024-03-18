@@ -4,9 +4,9 @@
   width: 100%;
   padding: 20px 0;
   background-color: $brand-secondary;
-  color: $brand;
+  color: $brand-default;
   //   box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid $border-color;
+  border-bottom: $border;
   //   position: fixed;
 
   &__wrapper {
