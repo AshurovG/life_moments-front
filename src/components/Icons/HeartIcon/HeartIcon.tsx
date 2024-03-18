@@ -1,14 +1,14 @@
 import * as React from "react";
 import { IconProps } from "../Icon";
 
-const HeartIcon: React.FC<IconProps> = ({ onClick }) => {
+const HeartIcon: React.FC<IconProps> = ({ onClick, width, height }) => {
   return (
     <svg
       onClick={onClick}
-      width="30px"
-      height="30px"
+      width={width ? width : 30}
+      height={height ? height : 30}
       viewBox="0 0 16 16"
-      fill="#0076ff"
+      fill="#000"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
