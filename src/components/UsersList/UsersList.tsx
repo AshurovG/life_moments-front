@@ -5,9 +5,14 @@ import { UserData } from "types";
 type UsersListProps = {
   users: UserData[];
   onFollowClick?: () => void;
+  actionText?: string;
 };
 
-const UsersList: React.FC<UsersListProps> = ({ users, onFollowClick }) => {
+const UsersList: React.FC<UsersListProps> = ({
+  users,
+  onFollowClick,
+  actionText,
+}) => {
   return (
     <div className={styles.users}>
       {users.map((user: UserData) => (
@@ -27,8 +32,14 @@ const UsersList: React.FC<UsersListProps> = ({ users, onFollowClick }) => {
               </p>
             </div>
           </div>
-          <p className={styles["users__item-action"]} onClick={onFollowClick}>
-            Подписаться
+          <p
+            className={styles["users__item-action"]}
+            onClick={onFollowClick}
+            style={
+              onFollowClick ? { cursor: "pointer" } : { cursor: "default" }
+            }
+          >
+            {actionText}
           </p>
         </div>
       ))}

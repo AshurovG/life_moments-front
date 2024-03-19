@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.scss";
-import { mockCurrentUser, mockMoments } from "../../consts";
+import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
+import UsersList from "components/UsersList";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
@@ -32,7 +33,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           </div>
           <div className={styles["home__page-info"]}>
             <div className={styles["home__page-info-details"]}>
-              <div className={styles["home__page-info-item"]}>
+              <div
+                style={{ cursor: "default" }}
+                className={styles["home__page-info-item"]}
+              >
                 <p className={styles["home__page-info-title"]}>
                   {mockCurrentUser.posts.length}
                 </p>
@@ -40,7 +44,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 <p className={styles["home__page-info-subtitle"]}>публикации</p>
               </div>
 
-              <div className={styles["home__page-info-item"]}>
+              <div
+                className={styles["home__page-info-item"]}
+                onClick={() => setIsFollowersOpened(true)}
+              >
                 <p className={styles["home__page-info-title"]}>
                   {mockCurrentUser.followers.length}
                 </p>
@@ -49,7 +56,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
               </div>
 
               <div className={styles["home__page-info-item"]}>
-                <p className={styles["home__page-info-title"]}>
+                <p
+                  className={styles["home__page-info-title"]}
+                  onClick={() => setIsFollowingsOpened(true)}
+                >
                   {mockCurrentUser.following.length}
                 </p>
 
@@ -102,6 +112,28 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       >
         <Moment moment={mockMoments[0]} />
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
+      </ModalWindow>
+
+      <ModalWindow
+        active={isFollowersOpened}
+        handleBackdropClick={() => setIsFollowersOpened(false)}
+        className={styles["home__page-modal-users"]}
+      >
+        <UsersList users={mockUsers} actionText="Подписан на вас" />
+        {/* TODO: сюда прокидывать самих пользователей, а не айди */}
+      </ModalWindow>
+
+      <ModalWindow
+        active={isFollowingsOpened}
+        handleBackdropClick={() => setIsFollowingsOpened(false)}
+        className={styles["home__page-modal-users"]}
+      >
+        <UsersList
+          users={mockUsers}
+          onFollowClick={() => {}}
+          actionText="Вы подписаны"
+        />
+        {/* TODO: сюда прокидывать самих пользователей, а не айди */}
       </ModalWindow>
     </div>
   );

@@ -29,6 +29,90 @@ export const mockUsers = [
     image:
       "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
   },
+  {
+    email: "user1@mail.ru",
+    username: "user1",
+    rating: 1,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user2@mail.ru",
+    username: "user2",
+    rating: 2,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user3@mail.ru",
+    username: "user3",
+    rating: 3,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user4@mail.ru",
+    username: "user4",
+    rating: 4,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user1@mail.ru",
+    username: "user1",
+    rating: 1,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user2@mail.ru",
+    username: "user2",
+    rating: 2,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user3@mail.ru",
+    username: "user3",
+    rating: 3,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user4@mail.ru",
+    username: "user4",
+    rating: 4,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user1@mail.ru",
+    username: "user1",
+    rating: 1,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user2@mail.ru",
+    username: "user2",
+    rating: 2,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user3@mail.ru",
+    username: "user3",
+    rating: 3,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
+  {
+    email: "user4@mail.ru",
+    username: "user4",
+    rating: 4,
+    image:
+      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+  },
 ];
 
 export const mockMoments = [
