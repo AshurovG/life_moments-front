@@ -22,7 +22,9 @@ const Header = () => {
         <div className={styles.header__icons}>
           <CompassIcon />
           <HeartIcon />
-          <ProfileIcon />
+          <Link to="/home">
+            <ProfileIcon />
+          </Link>
         </div>
       </div>
     </header>

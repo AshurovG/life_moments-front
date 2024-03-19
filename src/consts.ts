@@ -108,3 +108,22 @@ export const mockMoments = [
     tags: [{ title: "Природа" }, { title: "Красота" }],
   },
 ];
+
+export const mockCurrentUser = {
+  email: "current_user@mail.ru",
+  username: "currentUser",
+  followers: mockUsers,
+  following: mockUsers,
+  posts: [
+    mockMoments[0],
+    mockMoments[1],
+    mockMoments[2],
+    mockMoments[3],
+    mockMoments[1],
+    mockMoments[2],
+    mockMoments[3],
+  ],
+  rating: 1,
+  image:
+    "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
+};

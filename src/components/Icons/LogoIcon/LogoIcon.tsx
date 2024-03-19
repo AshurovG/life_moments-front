@@ -4,7 +4,7 @@ import { IconProps } from "../Icon";
 const LogoIcon: React.FC<IconProps> = ({ onClick }) => {
   return (
     <svg
-      style={{ background: "#0076ff", borderRadius: 10 }}
+      style={{ background: "#3670b1", borderRadius: 10 }}
       height={50}
       width={50}
       onClick={onClick}
