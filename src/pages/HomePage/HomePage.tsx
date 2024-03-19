@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.scss";
-import { mockCurrentUser } from "../../consts";
+import { mockCurrentUser, mockMoments } from "../../consts";
 import Button from "components/Button";
+import ModalWindow from "components/ModalWindow";
+import Moment from "components/Moment";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
+  const [isPostOpened, setIsPostOpened] = useState(false);
+  const [isFollowersOpened, setIsFollowersOpened] = useState(false);
+  const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
@@ -82,10 +87,22 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
         <div className={styles["home__page-gallery"]}>
           {mockCurrentUser.posts.map((element) => (
-            <img src={element.image} alt="" />
+            <img
+              src={element.image}
+              alt=""
+              onClick={() => setIsPostOpened(true)}
+            />
           ))}
         </div>
       </div>
+      <ModalWindow
+        active={isPostOpened}
+        handleBackdropClick={() => setIsPostOpened(false)}
+        className={styles["home__page-modal"]}
+      >
+        <Moment moment={mockMoments[0]} />
+        {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
+      </ModalWindow>
     </div>
   );
 };
