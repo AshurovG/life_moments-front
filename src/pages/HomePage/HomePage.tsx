@@ -1,9 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.scss";
 import { mockCurrentUser } from "../../consts";
 import Button from "components/Button";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
+  const navigate = useNavigate();
+
+  const onNewPostButtonClick = () => {
+    navigate("/moment");
+  };
+
   return (
     <div className={styles.home__page}>
       <div className={styles["home__page-wrapper"]}>
@@ -56,7 +63,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 <Button className={styles["home__page-info-btn"]}>
                   Редактировать
                 </Button>
-                <Button className={styles["home__page-info-btn"]}>
+                <Button
+                  onClick={onNewPostButtonClick}
+                  className={styles["home__page-info-btn"]}
+                >
                   Новая публикация
                 </Button>
               </div>

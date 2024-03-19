@@ -5,6 +5,7 @@ import LoginPage from "pages/LoginPage";
 import RegistrationPage from "pages/RegistrationPage";
 import EventsFeedPage from "pages/EventsFeedPage";
 import HomePage from "pages/HomePage";
+import MomentPage from "pages/MomentPage";
 import Header from "components/Header";
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
           <Route path="/events" element={<EventsFeedPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/user" element={<HomePage isAuthUser />} />
+          <Route path="/user" element={<HomePage />} />
+          <Route path="/home" element={<HomePage isAuthUser />} />
+          <Route path="/moment" element={<MomentPage />} />
           <Route path="*" element={<Navigate to="/events" replace />} />
         </Routes>
       </HashRouter>

@@ -1,6 +1,6 @@
 @import "../../styles/variables.scss";
 
-.auth__page {
+.moment__page {
   min-height: 100vh;
   margin-top: 100px;
 
@@ -15,7 +15,7 @@
   }
 
   &-title {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
     margin-bottom: 30px;
     color: $brand-default;
@@ -49,6 +49,29 @@
       }
     }
 
+    &-textarea {
+      font-family: inherit;
+      border-radius: 5px;
+      border: 1px solid $brand;
+      height: 100px;
+      text-align: left;
+      padding-left: 10px;
+      width: 100%;
+      font-size: 18px;
+      resize: none;
+
+      &-message {
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        left: 0;
+      }
+
+      &:focus {
+        border: 2px solid $brand;
+      }
+    }
+
     &-file {
       color: $brand;
       position: relative;
@@ -56,20 +79,18 @@
       &-message {
         font-size: 16px;
         color: red;
-
         position: absolute;
         left: 0;
       }
 
       &-block {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        // display: flex;
+        // align-items: center;
+        // gap: 20px;
 
         & img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
+          height: 150px;
+          margin-top: 10px;
         }
       }
     }
