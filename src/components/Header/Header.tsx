@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./Header.module.scss";
 import LogoIcon from "components/Icons/LogoIcon";
 import ProfileIcon from "components/Icons/ProfileIcon";
@@ -10,8 +11,12 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.header__wrapper}>
         <div className={styles["header__title-block"]}>
-          <LogoIcon />
-          <h4 className={styles.header__title}>Life Moments</h4>
+          <Link to="/events">
+            <LogoIcon />
+          </Link>
+          <Link to="/events">
+            <h4 className={styles.header__title}>Life Moments</h4>
+          </Link>
         </div>
 
         <div className={styles.header__icons}>

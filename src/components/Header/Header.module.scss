@@ -18,6 +18,8 @@
   }
 
   &__title {
+    color: $brand;
+    font-family: "Marck Script", cursive;
     &-block {
       display: flex;
       align-items: center;

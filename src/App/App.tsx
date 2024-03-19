@@ -9,8 +9,8 @@ import Header from "components/Header";
 function App() {
   return (
     <div className={styles.app}>
-      <Header />
       <HashRouter>
+        <Header />
         <Routes>
           <Route path="/events" element={<EventsFeedPage />} />
           <Route path="/login" element={<LoginPage />} />
