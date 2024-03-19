@@ -7,6 +7,7 @@ export type IconProps = React.SVGAttributes<SVGElement> & {
   height?: number;
   children?: React.ReactNode;
   onClick?: () => void;
+  handleEvent?: (event: React.MouseEvent<SVGElement>) => void;
   fill?: string;
   flag?: boolean;
 };

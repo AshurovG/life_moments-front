@@ -11,6 +11,7 @@ const CompassIcon = () => {
       width={30}
       height={30}
       xmlSpace="preserve"
+      style={{ cursor: "pointer" }}
     >
       <g>
         <g>

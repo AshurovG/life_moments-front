@@ -1,15 +1,18 @@
 import * as React from "react";
 import { IconProps } from "../Icon";
 
-const HeartIcon: React.FC<IconProps> = ({ onClick, width, height }) => {
+const HeartIcon = React.forwardRef<SVGSVGElement, IconProps>((props, ref) => {
+  const { onClick, width, height } = props;
   return (
     <svg
+      ref={ref} // Прикрепляем ref к элементу svg
       onClick={onClick}
       width={width ? width : 30}
       height={height ? height : 30}
       viewBox="0 0 16 16"
       fill="#000"
       xmlns="http://www.w3.org/2000/svg"
+      style={{ cursor: "pointer" }}
     >
       <path
         fill-rule="evenodd"
@@ -17,6 +20,6 @@ const HeartIcon: React.FC<IconProps> = ({ onClick, width, height }) => {
       />
     </svg>
   );
-};
+});
 
 export default HeartIcon;
