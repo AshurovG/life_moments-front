@@ -6,6 +6,7 @@ import ProfileIcon from "components/Icons/ProfileIcon";
 import HeartIcon from "components/Icons/HeartIcon";
 import CompassIcon from "components/Icons/CompassIcon";
 import EventsList from "components/EventsList";
+import { mockLikes, mockSubscriptions } from "../../consts";
 
 const Header = () => {
   const [isEventsOpened, setIsEventsOpened] = useState(false);
@@ -58,14 +59,18 @@ const Header = () => {
           />
           <Link to="/home">
             <ProfileIcon />
+            {isEventsOpened && (
+              <div ref={eventsListRef}>
+                <EventsList
+                  subscriptions={mockSubscriptions}
+                  likes={mockLikes}
+                  className={styles.header__events}
+                />
+              </div>
+            )}
           </Link>
         </div>
       </div>
-      {isEventsOpened && (
-        <div ref={eventsListRef}>
-          <EventsList />
-        </div>
-      )}
     </header>
   );
 };
