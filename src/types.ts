@@ -7,7 +7,7 @@ export type UserData = {
 
 export type SubscriptionData = {
   author: UserData;
-  subscriber: UserData;
+  follower: UserData;
   date?: string; // TODO: Поменять тип
 };
 
@@ -18,8 +18,9 @@ export type CommentData = {
 };
 
 export type LikeData = {
-  // TODO: Сделать разраничение на комменты и публикации
-  author: string; // TODO: оставить string либо объект UserData
+  author: UserData;
+  moment?: MomentData;
+  comment?: CommentData;
   date?: string; // TODO: Поменять тип
 };
 

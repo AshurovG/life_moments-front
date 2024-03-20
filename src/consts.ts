@@ -29,90 +29,6 @@ export const mockUsers = [
     image:
       "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
   },
-  {
-    email: "user1@mail.ru",
-    username: "user1",
-    rating: 1,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user2@mail.ru",
-    username: "user2",
-    rating: 2,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user3@mail.ru",
-    username: "user3",
-    rating: 3,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user4@mail.ru",
-    username: "user4",
-    rating: 4,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user1@mail.ru",
-    username: "user1",
-    rating: 1,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user2@mail.ru",
-    username: "user2",
-    rating: 2,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user3@mail.ru",
-    username: "user3",
-    rating: 3,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user4@mail.ru",
-    username: "user4",
-    rating: 4,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user1@mail.ru",
-    username: "user1",
-    rating: 1,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user2@mail.ru",
-    username: "user2",
-    rating: 2,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user3@mail.ru",
-    username: "user3",
-    rating: 3,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
-  {
-    email: "user4@mail.ru",
-    username: "user4",
-    rating: 4,
-    image:
-      "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
-  },
 ];
 
 export const mockMoments = [
@@ -150,7 +66,10 @@ export const mockMoments = [
     date: "18 марта 19:10",
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb_N4umbFejqkrOVdFJX9rV6DZHsm9oyzJsQ9vXqgI6Q&s",
-    likes: [{ author: "user2" }, { author: "user3" }],
+    likes: [
+      { author: "user2", date: "18 марта 22:01" },
+      { author: "user3", date: "18 марта 22:01" },
+    ],
     comments: [
       {
         author: mockUsers[0],
@@ -172,7 +91,10 @@ export const mockMoments = [
     date: "18 марта 19:20",
     image:
       "https://png.pngtree.com/thumb_back/fw800/background/20230612/pngtree-images-of-winter-and-white-background-wallpapers-free-download-image_2935697.jpg",
-    likes: [{ author: "user1" }, { author: "user3" }],
+    likes: [
+      { author: "user2", date: "18 марта 22:01" },
+      { author: "user3", date: "18 марта 22:01" },
+    ],
     comments: [
       {
         author: mockUsers[1],
@@ -211,3 +133,55 @@ export const mockCurrentUser = {
   image:
     "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg",
 };
+
+export const mockLikes = [
+  {
+    author: mockUsers[1],
+    date: "18 марта 21:01",
+    moment: {
+      title: "Момент 1",
+      text: "Описание момента 1",
+      author: mockUsers[0],
+      date: "18 марта 19:00",
+      image:
+        "https://img.freepik.com/free-photo/bright-petals-gift-love-in-a-bouquet-generated-by-ai_188544-13370.jpg",
+    },
+  },
+  {
+    author: mockUsers[1],
+    date: "18 марта 21:01",
+    moment: {
+      title: "Момент 1",
+      text: "Описание момента 1",
+      author: mockUsers[0],
+      date: "18 марта 19:00",
+      image:
+        "https://img.freepik.com/free-photo/bright-petals-gift-love-in-a-bouquet-generated-by-ai_188544-13370.jpg",
+    },
+  },
+  {
+    author: mockUsers[1],
+    date: "18 марта 21:01",
+    moment: {
+      title: "Момент 1",
+      text: "Описание момента 1",
+      author: mockUsers[0],
+      date: "18 марта 19:00",
+      image:
+        "https://img.freepik.com/free-photo/bright-petals-gift-love-in-a-bouquet-generated-by-ai_188544-13370.jpg",
+    },
+  },
+];
+
+export const mockSubscriptions = [
+  {
+    author: mockCurrentUser,
+    date: "18 марта 11:01",
+    follower: mockCurrentUser,
+  },
+  {
+    author: mockCurrentUser,
+    date: "19 марта 17:07",
+    follower: mockCurrentUser,
+  },
+];
