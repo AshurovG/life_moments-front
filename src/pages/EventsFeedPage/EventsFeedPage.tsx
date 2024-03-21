@@ -16,7 +16,9 @@ const EventsFeedPage = () => {
           ))}
         </div>
         <div className={styles["events__page-actions"]}>
-          <h4 className={styles["events__page-title"]}>Рекомендации для вас</h4>
+          <h4 className={styles["events__page-title"]}>
+            Популярные пользователи
+          </h4>
           <UsersList users={mockUsers} actionText="Подписаться" />
         </div>
       </div>

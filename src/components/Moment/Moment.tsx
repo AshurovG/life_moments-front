@@ -1,14 +1,24 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import styles from "./Moment.module.scss";
 import { MomentData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
 
-const Moment: React.FC<{ moment: MomentData }> = ({ moment }) => {
+type MomentProps = {
+  isModal?: boolean;
+  moment: MomentData;
+  className?: string;
+};
+
+const Moment: React.FC<MomentProps> = ({ moment, isModal, className }) => {
   const [isAllCommentsVisible, setIsAllCommentsVisible] = useState(false);
 
   return (
-    <div className={styles.moment}>
+    <div
+      className={clsx(styles.moment, className)}
+      style={!isModal ? { border: "1px solid #e9e9e9", borderRadius: 5 } : {}}
+    >
       <div className={styles.moment__wrapper}>
         <div className={styles.moment__header}>
           <img

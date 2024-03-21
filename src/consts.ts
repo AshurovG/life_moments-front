@@ -39,7 +39,10 @@ export const mockMoments = [
     date: "18 марта 19:00",
     image:
       "https://img.freepik.com/free-photo/bright-petals-gift-love-in-a-bouquet-generated-by-ai_188544-13370.jpg",
-    likes: [{ author: "user1" }, { author: "user2" }, { author: "user3" }],
+    likes: [
+      { author: mockUsers[0], date: "18 марта 22:01" },
+      { author: mockUsers[1], date: "18 марта 22:01" },
+    ],
     comments: [
       {
         author: mockUsers[1],
@@ -67,8 +70,9 @@ export const mockMoments = [
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb_N4umbFejqkrOVdFJX9rV6DZHsm9oyzJsQ9vXqgI6Q&s",
     likes: [
-      { author: "user2", date: "18 марта 22:01" },
-      { author: "user3", date: "18 марта 22:01" },
+      { author: mockUsers[1], date: "18 марта 22:01" },
+      { author: mockUsers[0], date: "18 марта 22:01" },
+      { author: mockUsers[2], date: "18 марта 22:01" },
     ],
     comments: [
       {
@@ -92,8 +96,8 @@ export const mockMoments = [
     image:
       "https://png.pngtree.com/thumb_back/fw800/background/20230612/pngtree-images-of-winter-and-white-background-wallpapers-free-download-image_2935697.jpg",
     likes: [
-      { author: "user2", date: "18 марта 22:01" },
-      { author: "user3", date: "18 марта 22:01" },
+      { author: mockUsers[0], date: "18 марта 22:01" },
+      { author: mockUsers[2], date: "18 марта 22:01" },
     ],
     comments: [
       {
@@ -110,7 +114,10 @@ export const mockMoments = [
     date: "18 марта 19:30",
     image:
       "https://i.pinimg.com/originals/25/52/81/25528187d8a32d1c998a63e3b301de86.jpg",
-    likes: [{ author: "user1" }, { author: "user2" }, { author: "user3" }],
+    likes: [
+      { author: mockUsers[0], date: "18 марта 22:01" },
+      { author: mockUsers[1], date: "18 марта 22:01" },
+    ],
     tags: [{ title: "Природа" }, { title: "Красота" }],
   },
 ];

@@ -55,11 +55,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 <p className={styles["home__page-info-subtitle"]}>подписчики</p>
               </div>
 
-              <div className={styles["home__page-info-item"]}>
-                <p
-                  className={styles["home__page-info-title"]}
-                  onClick={() => setIsFollowingsOpened(true)}
-                >
+              <div
+                className={styles["home__page-info-item"]}
+                onClick={() => setIsFollowingsOpened(true)}
+              >
+                <p className={styles["home__page-info-title"]}>
                   {mockCurrentUser.following.length}
                 </p>
 
@@ -110,7 +110,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         handleBackdropClick={() => setIsPostOpened(false)}
         className={styles["home__page-modal"]}
       >
-        <Moment moment={mockMoments[0]} />
+        <Moment
+          className={styles["home__page-moment"]}
+          moment={mockMoments[0]}
+          isModal
+        />
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
       </ModalWindow>
 
