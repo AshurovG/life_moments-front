@@ -80,6 +80,12 @@
     gap: 15px;
     flex-grow: 1;
 
+    &-input {
+      display: flex;
+      gap: 15px;
+      padding: 15px 0;
+    }
+
     &-item {
       display: flex;
       align-items: flex-start;

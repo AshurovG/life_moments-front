@@ -19,7 +19,11 @@ const EventsFeedPage = () => {
           <h4 className={styles["events__page-title"]}>
             Популярные пользователи
           </h4>
-          <UsersList users={mockUsers} actionText="Подписаться" />
+          <UsersList
+            onFollowClick={() => {}}
+            users={mockUsers}
+            actionText="Подписаться"
+          />
         </div>
       </div>
     </div>

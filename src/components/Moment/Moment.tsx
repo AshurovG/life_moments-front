@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import clsx from "clsx";
+import Input from "components/Input";
 import styles from "./Moment.module.scss";
 import { MomentData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
+import ArrowIcon from "components/Icons/ArrowIcon";
 
 type MomentProps = {
   isModal?: boolean;
@@ -56,7 +58,11 @@ const Moment: React.FC<MomentProps> = ({ moment, isModal, className }) => {
 
         <p className={styles.moment__text}>Нравится: {moment.likes?.length}</p>
 
-        <div className={styles.moment__comments}>
+        <div>
+          <div className={styles["moment__comments-input"]}>
+            <Input></Input>
+            <ArrowIcon></ArrowIcon>
+          </div>
           {moment.comments && (
             <>
               <div className={styles["moment__comments-item"]}>
