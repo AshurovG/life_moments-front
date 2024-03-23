@@ -5,6 +5,7 @@ import styles from "./Moment.module.scss";
 import { MomentData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
+import IconButton from "components/IconButton";
 import ArrowIcon from "components/Icons/ArrowIcon";
 
 type MomentProps = {
@@ -61,7 +62,9 @@ const Moment: React.FC<MomentProps> = ({ moment, isModal, className }) => {
         <div>
           <div className={styles["moment__comments-input"]}>
             <Input></Input>
-            <ArrowIcon></ArrowIcon>
+            <IconButton>
+              <ArrowIcon />
+            </IconButton>
           </div>
           {moment.comments && (
             <>

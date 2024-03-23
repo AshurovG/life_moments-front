@@ -1,12 +1,20 @@
 import React from "react";
 import styles from "./Input.module.scss";
 
-const Input = () => {
+type InputProps = {
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+};
+
+const Input: React.FC<InputProps> = ({ value, onChange, placeholder }) => {
   return (
     <input
-      placeholder={"Оставьте комментарий..."}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
       className={styles.input}
-    ></input>
+    />
   );
 };
 

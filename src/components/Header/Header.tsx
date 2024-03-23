@@ -50,7 +50,9 @@ const Header = () => {
         </div>
 
         <div className={styles.header__icons}>
-          <CompassIcon />
+          <Link to="/search">
+            <CompassIcon />
+          </Link>
           <HeartIcon
             ref={heartIconRef}
             onClick={() => {

@@ -6,6 +6,7 @@ import Button from "components/Button";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
 import UsersList from "components/UsersList";
+import Gallery from "components/Gallery";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
@@ -95,15 +96,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           aspernatur tenetur!
         </p>
 
-        <div className={styles["home__page-gallery"]}>
-          {mockCurrentUser.posts.map((element) => (
-            <img
-              src={element.image}
-              alt=""
-              onClick={() => setIsPostOpened(true)}
-            />
-          ))}
-        </div>
+        <Gallery
+          moments={mockCurrentUser.posts}
+          onMomentClick={() => setIsPostOpened(true)}
+          className={styles["home__page-gallery"]}
+        />
       </div>
       <ModalWindow
         active={isPostOpened}
