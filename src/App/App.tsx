@@ -17,8 +17,12 @@ function App() {
           <Route path="/events" element={<EventsFeedPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
-          <Route path="/user" element={<HomePage />} />
-          <Route path="/home" element={<HomePage isAuthUser />} />
+          {/* Маршрут для страницы выбранного пользователя */}
+          <Route path="/users/">
+            <Route path=":id" element={<HomePage />} />
+          </Route>
+          {/* Маршрут для авторизованного пользователя */}
+          <Route path="/home" element={<HomePage isAuthUser />} />{" "}
           <Route path="/moment" element={<MomentPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<Navigate to="/events" replace />} />

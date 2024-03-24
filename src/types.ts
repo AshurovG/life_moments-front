@@ -1,4 +1,5 @@
 export type UserData = {
+  id: number;
   email: string;
   username: string;
   image: string;
@@ -6,18 +7,21 @@ export type UserData = {
 };
 
 export type SubscriptionData = {
+  id: number;
   author: UserData;
   follower: UserData;
   date?: string; // TODO: Поменять тип
 };
 
 export type CommentData = {
+  id: number;
   text: string;
   author: UserData;
   date: string; // TODO: Поменять тип
 };
 
 export type LikeData = {
+  id: number;
   author: UserData;
   moment?: MomentData;
   comment?: CommentData;
@@ -25,10 +29,12 @@ export type LikeData = {
 };
 
 export type TagData = {
+  id: number;
   title: string; // TODO: Добавить либо сам момент, либо какое-то поле
 };
 
 export type MomentData = {
+  id: number;
   title: string;
   text: string;
   author: UserData;

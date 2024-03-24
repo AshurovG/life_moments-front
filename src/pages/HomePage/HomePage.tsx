@@ -120,7 +120,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         handleBackdropClick={() => setIsFollowersOpened(false)}
         className={styles["home__page-modal-users"]}
       >
-        <UsersList users={mockUsers} actionText="Подписан на вас" />
+        <UsersList
+          users={mockUsers}
+          actionText="Подписан на вас"
+          onUserClick={() => setIsFollowersOpened(false)}
+        />
         {/* TODO: сюда прокидывать самих пользователей, а не айди */}
       </ModalWindow>
 
@@ -133,6 +137,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           users={mockUsers}
           onFollowClick={() => {}}
           actionText="Вы подписаны"
+          onUserClick={() => setIsFollowingsOpened(false)}
         />
         {/* TODO: сюда прокидывать самих пользователей, а не айди */}
       </ModalWindow>
