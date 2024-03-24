@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import styles from "./Gallery.module.scss";
 import { MomentData } from "types";
+import ModalWindow from "components/ModalWindow";
+import Moment from "components/Moment";
 
 type GalleryProps = {
   moments: MomentData[];
-  onMomentClick: () => void;
+  onMomentClick?: () => void;
   className?: string;
 };
 
@@ -14,12 +16,38 @@ const Gallery: React.FC<GalleryProps> = ({
   onMomentClick,
   className,
 }) => {
+  const [isPostOpened, setIsPostOpened] = useState(false);
+  const [currentMoment, setCurrentMoment] = useState<MomentData>();
+
+  const onClick = (id: number) => {
+    setIsPostOpened(true);
+    setCurrentMoment(moments.find((moment) => moment.id === id));
+  };
+
   return (
-    <div className={clsx(styles.gallery, className)}>
-      {moments.map((moment) => (
-        <img src={moment.image} alt="" onClick={onMomentClick} />
-      ))}
-    </div>
+    <>
+      <div className={clsx(styles.gallery, className)}>
+        {moments.map((moment) => (
+          <img src={moment.image} alt="" onClick={() => onClick(moment.id)} />
+        ))}
+      </div>
+
+      <ModalWindow
+        active={isPostOpened}
+        handleBackdropClick={() => setIsPostOpened(false)}
+        className={styles["gallery__modal"]}
+      >
+        {currentMoment && (
+          <Moment
+            className={styles["gallery__moment"]}
+            moment={currentMoment}
+            isModal
+            isModalOpened={isPostOpened}
+          />
+        )}
+        {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
+      </ModalWindow>
+    </>
   );
 };
 

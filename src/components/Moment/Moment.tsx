@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import Input from "components/Input";
 import styles from "./Moment.module.scss";
@@ -9,13 +9,25 @@ import IconButton from "components/IconButton";
 import ArrowIcon from "components/Icons/ArrowIcon";
 
 type MomentProps = {
-  isModal?: boolean;
   moment: MomentData;
+  isModal?: boolean;
+  isModalOpened?: boolean;
   className?: string;
 };
 
-const Moment: React.FC<MomentProps> = ({ moment, isModal, className }) => {
+const Moment: React.FC<MomentProps> = ({
+  moment,
+  isModal,
+  isModalOpened,
+  className,
+}) => {
   const [isAllCommentsVisible, setIsAllCommentsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isModalOpened) {
+      setIsAllCommentsVisible(false);
+    }
+  }, [isModalOpened]);
 
   return (
     <div
@@ -59,9 +71,9 @@ const Moment: React.FC<MomentProps> = ({ moment, isModal, className }) => {
 
         <p className={styles.moment__text}>Нравится: {moment.likes?.length}</p>
 
-        <div>
+        <div className={styles["moment__comments"]}>
           <div className={styles["moment__comments-input"]}>
-            <Input></Input>
+            <Input placeholder="Отправьте комментарий*"></Input>
             <IconButton>
               <ArrowIcon />
             </IconButton>

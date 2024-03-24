@@ -10,7 +10,7 @@ import Gallery from "components/Gallery";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
-  const [isPostOpened, setIsPostOpened] = useState(false);
+  // const [isPostOpened, setIsPostOpened] = useState(false);
   const [isFollowersOpened, setIsFollowersOpened] = useState(false);
   const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
 
@@ -98,22 +98,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
         <Gallery
           moments={mockCurrentUser.posts}
-          onMomentClick={() => setIsPostOpened(true)}
+          // onMomentClick={() => setIsPostOpened(true)}
           className={styles["home__page-gallery"]}
         />
       </div>
-      <ModalWindow
-        active={isPostOpened}
-        handleBackdropClick={() => setIsPostOpened(false)}
-        className={styles["home__page-modal"]}
-      >
-        <Moment
-          className={styles["home__page-moment"]}
-          moment={mockMoments[0]}
-          isModal
-        />
-        {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
-      </ModalWindow>
 
       <ModalWindow
         active={isFollowersOpened}
