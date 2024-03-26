@@ -83,12 +83,28 @@
     height: 100vh;
     overflow-y: auto;
 
+    &-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 30px;
+      color: $brand-default;
+      text-align: center;
+    }
+
     &-users {
       background-color: $background-color;
       width: $users-content-width !important;
       padding: 40px;
       max-height: 90%;
       overflow-y: auto;
+    }
+
+    &-settings {
+      border-radius: 10px;
+      width: $users-content-width !important;
+      background-color: $background-color;
+      padding: 40px;
+      max-height: 90%;
     }
   }
 

@@ -80,7 +80,6 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     console.log(data.username);
     console.log(data.email);
     console.log(data.description);
-    console.log(data.password);
     navigate("/home");
   };
 

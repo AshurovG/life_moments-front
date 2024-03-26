@@ -7,12 +7,13 @@ import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
 import UsersList from "components/UsersList";
 import Gallery from "components/Gallery";
+import SettingsForm from "components/SettingsForm";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
-  // const [isPostOpened, setIsPostOpened] = useState(false);
   const [isFollowersOpened, setIsFollowersOpened] = useState(false);
   const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
+  const [isSettingsOpened, setIsSettingsOpened] = useState(false);
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
@@ -76,7 +77,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
               </div>
             ) : (
               <div className={styles["home__page-info-actions"]}>
-                <Button className={styles["home__page-info-btn"]}>
+                <Button
+                  className={styles["home__page-info-btn"]}
+                  onClick={() => setIsSettingsOpened(true)}
+                >
                   Редактировать
                 </Button>
                 <Button
@@ -128,6 +132,20 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           onUserClick={() => setIsFollowingsOpened(false)}
         />
         {/* TODO: сюда прокидывать самих пользователей, а не айди */}
+      </ModalWindow>
+
+      <ModalWindow
+        active={isSettingsOpened}
+        handleBackdropClick={() => setIsSettingsOpened(false)}
+        className={styles["home__page-modal-settings"]}
+      >
+        <h4 className={styles["home__page-modal-title"]}>Настройки профиля</h4>
+        <SettingsForm
+          username={mockCurrentUser.username}
+          email={mockCurrentUser.email}
+          descripton="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi consequatur maiores vero vel quasi ipsam atque asperiores repellat aspernatur tenetur!"
+          image={mockCurrentUser.image}
+        />
       </ModalWindow>
     </div>
   );
