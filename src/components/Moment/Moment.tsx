@@ -7,6 +7,7 @@ import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
 import IconButton from "components/IconButton";
 import ArrowIcon from "components/Icons/ArrowIcon";
+import { Link } from "react-router-dom";
 
 type MomentProps = {
   moment: MomentData;
@@ -36,15 +37,19 @@ const Moment: React.FC<MomentProps> = ({
     >
       <div className={styles.moment__wrapper}>
         <div className={styles.moment__header}>
-          <img
-            className={styles["moment__header-logo"]}
-            src={moment.author.image}
-            alt="user"
-          />
+          <Link to={`/users/${moment.author.id}`}>
+            <img
+              className={styles["moment__header-logo"]}
+              src={moment.author.image}
+              alt="user"
+            />
+          </Link>
           <div className={styles["moment__text"]}>
-            <h4 className={styles["moment__username"]}>
-              {moment.author.username}
-            </h4>
+            <Link to={`/users/${moment.author.id}`}>
+              <h4 className={styles["moment__username"]}>
+                {moment.author.username}
+              </h4>
+            </Link>
             <p className={styles["moment__header-date"]}>{moment.date}</p>
           </div>
         </div>
@@ -82,16 +87,20 @@ const Moment: React.FC<MomentProps> = ({
             <>
               <div className={styles["moment__comments-item"]}>
                 <div className={styles["moment__comments-wrapper"]}>
-                  <img
-                    className={styles["moment__comments-logo"]}
-                    src={moment.author.image}
-                    alt="user"
-                  />
+                  <Link to={`/users/${moment.comments[0].author.id}`}>
+                    <img
+                      className={styles["moment__comments-logo"]}
+                      src={moment.author.image}
+                      alt="user"
+                    />
+                  </Link>
                   <div className={styles["moment__text"]}>
                     <div className={styles["moment__comments-caption"]}>
-                      <h4 className={styles["moment__comments-username"]}>
-                        {moment.comments[0].author.username}
-                      </h4>
+                      <Link to={`/users/${moment.comments[0].author.id}`}>
+                        <h4 className={styles["moment__comments-username"]}>
+                          {moment.comments[0].author.username}
+                        </h4>
+                      </Link>
                       <p className={styles["moment__comments-date"]}>
                         {moment.comments[0].date}
                       </p>
@@ -117,16 +126,21 @@ const Moment: React.FC<MomentProps> = ({
                 moment.comments.slice(1).map((comment, index) => (
                   <div className={styles["moment__comments-item"]}>
                     <div className={styles["moment__comments-wrapper"]}>
-                      <img
-                        className={styles["moment__comments-logo"]}
-                        src={moment.author.image}
-                        alt="user"
-                      />
+                      <Link to={`/users/${comment.author.id}`}>
+                        <img
+                          className={styles["moment__comments-logo"]}
+                          src={moment.author.image}
+                          alt="user"
+                        />
+                      </Link>
+
                       <div className={styles["moment__text"]}>
                         <div className={styles["moment__comments-caption"]}>
-                          <h4 className={styles["moment__comments-username"]}>
-                            {comment.author.username}
-                          </h4>
+                          <Link to={`/users/${comment.author.id}`}>
+                            <h4 className={styles["moment__comments-username"]}>
+                              {comment.author.username}
+                            </h4>
+                          </Link>
                           <p className={styles["moment__comments-date"]}>
                             {comment.date}
                           </p>

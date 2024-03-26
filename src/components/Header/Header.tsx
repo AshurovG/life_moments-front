@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Header.module.scss";
 import LogoIcon from "components/Icons/LogoIcon";
 import ProfileIcon from "components/Icons/ProfileIcon";
@@ -12,6 +13,25 @@ const Header = () => {
   const [isEventsOpened, setIsEventsOpened] = useState(false);
   const eventsListRef = useRef<HTMLDivElement>(null);
   const heartIconRef = useRef<SVGSVGElement>(null);
+
+  const submenuVariants = {
+    open: {
+      opacity: 1,
+      height: "auto",
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
 
   const handleClickOutside = (event: React.MouseEvent<HTMLElement>) => {
     const eventsListElement = eventsListRef.current;
@@ -61,15 +81,35 @@ const Header = () => {
           />
           <Link to="/home">
             <ProfileIcon />
-            {isEventsOpened && (
+            <AnimatePresence>
+              {isEventsOpened && (
+                <motion.div
+                  className={styles.submenu}
+                  variants={submenuVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  ref={eventsListRef}
+                >
+                  <div>
+                    <EventsList
+                      subscriptions={mockSubscriptions} // TODO: Перепроверить типы данных
+                      likes={mockLikes}
+                      className={styles.header__events}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {/* {isEventsOpened && (
               <div ref={eventsListRef}>
                 <EventsList
-                  subscriptions={mockSubscriptions}
+                  subscriptions={mockSubscriptions} // TODO: Перепроверить типы данных
                   likes={mockLikes}
                   className={styles.header__events}
                 />
               </div>
-            )}
+            )} */}
           </Link>
         </div>
       </div>
