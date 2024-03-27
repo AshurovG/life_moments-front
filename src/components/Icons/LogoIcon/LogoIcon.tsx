@@ -5,8 +5,8 @@ const LogoIcon: React.FC<IconProps> = ({ onClick }) => {
   return (
     <svg
       style={{ background: "#3670b1", borderRadius: 10 }}
-      height={50}
-      width={50}
+      height={35}
+      width={35}
       onClick={onClick}
       enable-background="new 0 0 64 64"
       id="Layer_1"

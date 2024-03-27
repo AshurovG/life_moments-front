@@ -144,6 +144,7 @@ export const mockMoments = [
 ];
 
 export const mockCurrentUser = {
+  id: 1,
   email: "current_user@mail.ru",
   username: "currentUser",
   followers: mockUsers,
@@ -164,9 +165,11 @@ export const mockCurrentUser = {
 
 export const mockLikes = [
   {
+    id: 1,
     author: mockUsers[1],
     date: "18 марта 21:01",
     moment: {
+      id: 1,
       title: "Момент 1",
       text: "Описание момента 1",
       author: mockUsers[0],
@@ -176,9 +179,11 @@ export const mockLikes = [
     },
   },
   {
+    id: 2,
     author: mockUsers[1],
     date: "18 марта 21:01",
     moment: {
+      id: 1,
       title: "Момент 1",
       text: "Описание момента 1",
       author: mockUsers[0],
@@ -188,9 +193,11 @@ export const mockLikes = [
     },
   },
   {
+    id: 3,
     author: mockUsers[1],
     date: "18 марта 21:01",
     moment: {
+      id: 1,
       title: "Момент 1",
       text: "Описание момента 1",
       author: mockUsers[0],

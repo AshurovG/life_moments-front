@@ -3,6 +3,9 @@ export type UserData = {
   email: string;
   username: string;
   image: string;
+  followers?: UserData[];
+  followings?: UserData[];
+  posts?: MomentData[];
   rating?: number;
 };
 
