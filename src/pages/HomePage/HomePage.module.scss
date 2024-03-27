@@ -92,10 +92,12 @@
     }
 
     &-users {
+      padding-top: 20px;
       background-color: $background-color;
       width: $users-content-width !important;
       padding: 40px;
-      max-height: 90%;
+      // max-height: 90%;
+      height: 90%;
       overflow-y: auto;
     }
 

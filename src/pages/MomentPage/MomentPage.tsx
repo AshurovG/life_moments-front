@@ -4,6 +4,7 @@ import Button from "components/Button";
 import styles from "./MomentPage.module.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { MAX_FILE_SIZE } from "../../consts";
+import BackIcon from "components/Icons/BackIcon";
 
 const MomentPage = () => {
   const navigate = useNavigate();
@@ -65,6 +66,7 @@ const MomentPage = () => {
   return (
     <div className={styles.moment__page}>
       <div className={styles["moment__page-wrapper"]}>
+        <BackIcon onClick={() => navigate("/home")}></BackIcon>
         <h1 className={styles["moment__page-title"]}>Создание нового поста</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}

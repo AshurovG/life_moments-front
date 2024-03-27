@@ -2,10 +2,9 @@
 
 .moment__page {
   min-height: 100vh;
-  margin-top: 100px;
 
   &-wrapper {
-    max-width: 400px;
+    max-width: 500px;
     // border: $border;
     border-radius: $border-radius;
     margin: 0 auto;
@@ -15,17 +14,25 @@
   }
 
   &-title {
+    width: 100%;
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 30px;
     color: $brand-default;
     text-align: center;
+
+    &-block {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
   }
 
   &-form {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    width: 100%;
 
     &-input {
       border-radius: 5px;

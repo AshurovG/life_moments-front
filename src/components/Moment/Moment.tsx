@@ -145,8 +145,8 @@ const Moment: React.FC<MomentProps> = ({
                             {comment.date}
                           </p>
                         </div>
-
-                        <p className={styles.moment__link}>Нравится: 2</p>
+                        <p>{comment.text}</p>
+                        <p className={styles.moment__link}>Нравится: 1</p>
                         {index + 2 == moment.comments?.length && (
                           <p
                             style={{ cursor: "pointer" }}
