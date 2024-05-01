@@ -1,0 +1,134 @@
+@import "../../styles/variables.scss";
+
+.moment__page {
+  min-height: 100vh;
+
+  &-wrapper {
+    max-width: 500px;
+    // border: $border;
+    border-radius: $border-radius;
+    margin: 0 auto;
+
+    // background-color: $brand-secondary;
+    padding: 30px;
+  }
+
+  &-title {
+    width: 100%;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: $brand-default;
+    text-align: center;
+
+    &-block {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+  }
+
+  &-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+
+    &-input {
+      border-radius: 5px;
+      border: 1px solid $brand;
+      height: 50px;
+      max-height: 50px;
+      text-align: left;
+      padding-left: 10px;
+      width: 100%;
+      font-size: 18px;
+
+      &-message {
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        left: 0;
+      }
+
+      &:focus {
+        border: 2px solid $brand;
+      }
+    }
+
+    &-textarea {
+      font-family: inherit;
+      border-radius: 5px;
+      border: 1px solid $brand;
+      height: 100px;
+      text-align: left;
+      padding-left: 10px;
+      padding-top: 10px;
+      width: 100%;
+      font-size: 18px;
+      resize: none;
+
+      &-message {
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        left: 0;
+      }
+
+      &:focus {
+        border: 2px solid $brand;
+      }
+    }
+
+    &-file {
+      color: $brand;
+      position: relative;
+
+      &-message {
+        font-size: 16px;
+        color: red;
+        position: absolute;
+        left: 0;
+      }
+
+      &-block {
+        // display: flex;
+        // align-items: center;
+        // gap: 20px;
+
+        & img {
+          height: 150px;
+          margin-top: 10px;
+          max-width: 100%;
+        }
+      }
+    }
+
+    &-btn {
+      width: 100%;
+      display: block;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    &-link {
+      display: block;
+      color: $brand;
+      text-decoration: underline;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.test {
+  display: flex;
+  flex-direction: column;
+}
+
+.test1 {
+  margin-bottom: 20px;
+}
+
+.test2 {
+  margin-top: 10px;
+}

@@ -1,28 +1,17 @@
-$content-width: 1440px;
+$content-width: 70vw;
+$modal-content-width: 50vw;
+$users-content-width: 30vw;
 
-$brand-color: #a0774d;
-
+// $brand: #0076ff;
+$brand: #3670b1;
 $brand-secondary: #fff;
+$brand-default: #000;
+$brand-hover: #0469db;
+$brand-link: #9e9e9e;
+$background-color: #fafafa;
+$button-color: #3670b1;
 
-$background-color: #000;
+$border: 1px solid #e9e9e9;
+$border-radius: 10px;
 
-$gradient-right-to-left: linear-gradient(
-  270deg,
-  rgb(0, 0, 0) 45%,
-  rgb(255, 255, 255, 0)
-);
-$gradient-left-to-right: linear-gradient(
-  90deg,
-  rgb(0, 0, 0) 45%,
-  rgb(255, 255, 255, 0)
-);
-$gradient-top-to-bottom: linear-gradient(
-  180deg,
-  rgb(0, 0, 0) 22%,
-  rgb(255, 255, 255, 0)
-);
-$gradient-bottom-to-top: linear-gradient(
-  0deg,
-  rgb(0, 0, 0) 25%,
-  rgb(255, 255, 255, 0)
-);
+$box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);

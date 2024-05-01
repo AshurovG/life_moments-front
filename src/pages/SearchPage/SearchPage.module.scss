@@ -1,0 +1,28 @@
+@import "../../styles/variables.scss";
+
+.search__page {
+  min-height: 100vh;
+  margin-top: 30px;
+
+  &-wrapper {
+    max-width: $content-width;
+    min-height: 100vh;
+    margin: 0 auto;
+  }
+
+  &-action {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  &-modal {
+    max-width: $modal-content-width;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  &-moment {
+    height: 100%;
+  }
+}

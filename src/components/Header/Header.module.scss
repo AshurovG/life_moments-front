@@ -1,0 +1,44 @@
+@import "../../styles/variables.scss";
+
+.header {
+  width: 100%;
+  padding: 20px 0;
+  background-color: $brand-secondary;
+  color: $brand-default;
+  //   box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0.5);
+  border-bottom: $border;
+  //   position: fixed;
+  user-select: none;
+
+  &__wrapper {
+    position: relative;
+
+    max-width: $content-width;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    color: $brand;
+    font-family: "Marck Script", cursive;
+    &-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__events {
+    position: absolute;
+    right: 0;
+    top: 90px;
+  }
+}
