@@ -139,6 +139,10 @@ const MomentPage = () => {
             Сохранить
           </Button>
         </form>
+        <div className={styles.test}>
+          <div className={styles.test1}>djgfklsdg</div>
+          <div className={styles.test2}>aaaaaaaa</div>
+        </div>
       </div>
     </div>
   );
