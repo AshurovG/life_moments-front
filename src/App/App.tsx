@@ -1,5 +1,7 @@
 import styles from "./App.module.scss";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import LoginPage from "pages/LoginPage";
 import RegistrationPage from "pages/RegistrationPage";
 import EventsFeedPage from "pages/EventsFeedPage";
@@ -28,6 +30,8 @@ function App() {
           <Route path="*" element={<Navigate to="/events" replace />} />
         </Routes>
       </HashRouter>
+
+      <ToastContainer autoClose={1500} pauseOnHover={false} />
     </div>
   );
 }

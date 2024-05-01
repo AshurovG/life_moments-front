@@ -1,8 +1,10 @@
 import { useRef } from "react";
+import axios from "axios";
 import { useForm, FieldValues } from "react-hook-form";
-import Button from "components/Button";
 import styles from "./LoginPage.module.scss";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Button from "components/Button";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,10 +17,24 @@ const LoginPage = () => {
   const { register, handleSubmit, formState } = forma;
   const { isValid, touchedFields, errors } = formState;
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data.username);
-    console.log(data.password);
-    navigate("/events");
+  const loginUser = async (data: FieldValues) => {
+    const sendingData = {
+      username: data.username,
+      password: data.password,
+    };
+
+    try {
+      const response = await axios("http://127.0.0.1:8000/api/user/login", {
+        method: "POST",
+        data: sendingData,
+        withCredentials: true,
+      });
+
+      toast.success("Вы успешно вошли в аккаунт!");
+      navigate("/events");
+    } catch {
+      toast.error("Неверное имя пользователя или пароль!");
+    }
   };
 
   return (
@@ -26,7 +42,7 @@ const LoginPage = () => {
       <div className={styles["auth__page-wrapper"]}>
         <h1 className={styles["auth__page-title"]}>Вход в аккаунт</h1>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(loginUser)}
           ref={form}
           className={styles["auth__page-form"]}
         >

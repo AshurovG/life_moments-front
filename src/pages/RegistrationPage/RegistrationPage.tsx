@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
+import axios from "axios";
 import { useForm, FieldValues, Controller } from "react-hook-form";
 import Button from "components/Button";
 import styles from "./RegistrationPage.module.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { MAX_FILE_SIZE } from "../../consts";
+import { toast } from "react-toastify";
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
@@ -25,6 +27,30 @@ const RegistrationPage = () => {
     formState,
   } = forma;
   const { isValid, touchedFields, errors } = formState;
+
+  const registerUser = async (data: FieldValues) => {
+    const sendingData = {
+      // TODO Сделать валидацию имени пользователя на одно слово
+      username: data.username,
+      email: data.email,
+      password: data.password,
+      profile_picture: "test picture",
+    };
+
+    try {
+      const response = await axios("http://127.0.0.1:8000/api/user/register", {
+        method: "POST",
+        data: sendingData,
+        withCredentials: true,
+      });
+
+      toast.success("Регистрация прошла успешно!");
+
+      navigate("/events");
+    } catch {
+      toast.error("Такой пользователь уже существует!");
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -55,19 +81,12 @@ const RegistrationPage = () => {
     }
   };
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data.email);
-    console.log(data.username);
-    console.log(data.password);
-    navigate("/events");
-  };
-
   return (
     <div className={styles.auth__page}>
       <div className={styles["auth__page-wrapper"]}>
         <h1 className={styles["auth__page-title"]}>Регистрация</h1>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(registerUser)}
           ref={form}
           className={styles["auth__page-form"]}
         >
