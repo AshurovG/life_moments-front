@@ -1,14 +1,17 @@
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useForm, FieldValues, Controller } from "react-hook-form";
-import Button from "components/Button";
 import styles from "./RegistrationPage.module.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { MAX_FILE_SIZE } from "../../consts";
 import { toast } from "react-toastify";
+import { setUserInfoAction } from "slices/UserSlice";
+import { useDispatch } from "react-redux";
+import Button from "components/Button";
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const form = useRef<HTMLFormElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -38,14 +41,14 @@ const RegistrationPage = () => {
     };
 
     try {
-      const response = await axios("http://127.0.0.1:8000/api/user/register", {
+      const response = await axios("http://localhost:8000/api/user/register", {
         method: "POST",
         data: sendingData,
         withCredentials: true,
       });
 
+      dispatch(setUserInfoAction(response.data));
       toast.success("Регистрация прошла успешно!");
-
       navigate("/events");
     } catch {
       toast.error("Такой пользователь уже существует!");

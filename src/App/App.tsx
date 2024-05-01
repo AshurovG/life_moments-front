@@ -1,7 +1,12 @@
+import { useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 import LoginPage from "pages/LoginPage";
 import RegistrationPage from "pages/RegistrationPage";
 import EventsFeedPage from "pages/EventsFeedPage";
@@ -11,24 +16,64 @@ import SearchPage from "pages/SearchPage";
 import Header from "components/Header";
 
 function App() {
+  const dispatch = useDispatch();
+  const userInfo = useUserInfo();
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true);
+
+  const check = async () => {
+    try {
+      const response = await axios("http://localhost:8000/api/user/info", {
+        withCredentials: true,
+      });
+      dispatch(setUserInfoAction(response.data));
+      setIsUserInfoLoading(false);
+      console.log(response.status);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (!Cookies.get("session_id")) {
+      setIsUserInfoLoading(false);
+    } else {
+      check();
+    }
+  }, []);
+
   return (
     <div className={styles.app}>
       <HashRouter>
-        <Header />
-        <Routes>
-          <Route path="/events" element={<EventsFeedPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
-          {/* Маршрут для страницы выбранного пользователя */}
-          <Route path="/users/">
-            <Route path=":id" element={<HomePage />} />
-          </Route>
-          {/* Маршрут для авторизованного пользователя */}
-          <Route path="/home" element={<HomePage isAuthUser />} />{" "}
-          <Route path="/moment" element={<MomentPage />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="*" element={<Navigate to="/events" replace />} />
-        </Routes>
+        {isUserInfoLoading ? (
+          <h1>Загрузка...</h1> // TODO добавить loader
+        ) : (
+          <>
+            <Header />
+            <Routes>
+              <Route path="/events" element={<EventsFeedPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              {!userInfo ? (
+                <>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/registration" element={<RegistrationPage />} />
+                </>
+              ) : (
+                <>
+                  {/* Маршрут для авторизованного пользователя */}
+                  <Route path="/home" element={<HomePage isAuthUser />} />{" "}
+                  <Route path="/moment" element={<MomentPage />} />
+                </>
+              )}
+
+              {/* Маршрут для страницы выбранного пользователя */}
+              <Route path="/users/">
+                <Route path=":id" element={<HomePage />} />
+              </Route>
+
+              <Route path="*" element={<Navigate to="/events" replace />} />
+            </Routes>
+          </>
+        )}
       </HashRouter>
 
       <ToastContainer autoClose={1500} pauseOnHover={false} />

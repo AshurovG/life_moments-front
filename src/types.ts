@@ -1,12 +1,21 @@
 export type UserData = {
   id: number;
-  email: string;
   username: string;
-  image: string;
+  email: string;
+  image: string; // WAS image
   followers?: UserData[];
   followings?: UserData[];
   posts?: MomentData[];
   rating?: number;
+};
+
+export type RecUserData = {
+  id: number;
+  username: string;
+  email: string;
+  profile_picture: string;
+  rating: number;
+  registration_date: string;
 };
 
 export type SubscriptionData = {

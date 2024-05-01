@@ -4,10 +4,13 @@ import { useForm, FieldValues } from "react-hook-form";
 import styles from "./LoginPage.module.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { setUserInfoAction } from "slices/UserSlice";
+import { useDispatch } from "react-redux";
 import Button from "components/Button";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const form = useRef<HTMLFormElement>(null);
 
   const forma = useForm({
@@ -19,17 +22,18 @@ const LoginPage = () => {
 
   const loginUser = async (data: FieldValues) => {
     const sendingData = {
-      username: data.username,
+      username: data.username, // TODO Сделать валидацию на имя пользователя
       password: data.password,
     };
 
     try {
-      const response = await axios("http://127.0.0.1:8000/api/user/login", {
+      const response = await axios("http://localhost:8000/api/user/login", {
         method: "POST",
         data: sendingData,
         withCredentials: true,
       });
 
+      dispatch(setUserInfoAction(response.data));
       toast.success("Вы успешно вошли в аккаунт!");
       navigate("/events");
     } catch {
