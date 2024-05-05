@@ -39,7 +39,7 @@ function App() {
     } else {
       check();
     }
-  }, []);
+  }, [userInfo?.username]);
 
   return (
     <div className={styles.app}>

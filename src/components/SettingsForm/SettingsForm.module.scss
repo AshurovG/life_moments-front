@@ -92,4 +92,9 @@
     text-decoration: underline;
     margin-bottom: 5px;
   }
+
+  &__logout {
+    color: $brand;
+    cursor: pointer;
+  }
 }

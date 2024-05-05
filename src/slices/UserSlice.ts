@@ -12,7 +12,7 @@ const dataSlice = createSlice({
     userInfo: null,
   } as DataState,
   reducers: {
-    setUserInfo(state, action: PayloadAction<RecUserData>) {
+    setUserInfo(state, action: PayloadAction<RecUserData | null>) {
       console.log(action.payload);
       state.userInfo = action.payload;
     },

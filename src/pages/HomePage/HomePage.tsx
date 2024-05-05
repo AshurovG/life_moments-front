@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
 import styles from "./HomePage.module.scss";
 import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
@@ -8,15 +12,41 @@ import Moment from "components/Moment";
 import UsersList from "components/UsersList";
 import Gallery from "components/Gallery";
 import SettingsForm from "components/SettingsForm";
+import { toast } from "react-toastify";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userInfo = useUserInfo();
   const [isFollowersOpened, setIsFollowersOpened] = useState(false);
   const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
   const [isSettingsOpened, setIsSettingsOpened] = useState(false);
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
+  };
+
+  const logout = async () => {
+    try {
+      await axios("http://localhost:8000/api/user/logout", {
+        method: "POST",
+        withCredentials: true,
+      });
+      Cookies.remove("session_id");
+      dispatch(setUserInfoAction(null));
+      toast.success("Выход выполнен успешно!");
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleLogoutClick = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
@@ -145,6 +175,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           email={mockCurrentUser.email}
           descripton="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi consequatur maiores vero vel quasi ipsam atque asperiores repellat aspernatur tenetur!"
           image={mockCurrentUser.image}
+          handleLogoutClick={handleLogoutClick}
         />
       </ModalWindow>
     </div>

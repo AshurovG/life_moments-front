@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useUserInfo } from "slices/UserSlice";
 import styles from "./Header.module.scss";
 import LogoIcon from "components/Icons/LogoIcon";
 import ProfileIcon from "components/Icons/ProfileIcon";
@@ -10,6 +11,7 @@ import EventsList from "components/EventsList";
 import { mockLikes, mockSubscriptions } from "../../consts";
 
 const Header = () => {
+  const userInfo = useUserInfo();
   const [isEventsOpened, setIsEventsOpened] = useState(false);
   const eventsListRef = useRef<HTMLDivElement>(null);
   const heartIconRef = useRef<SVGSVGElement>(null);
@@ -81,6 +83,8 @@ const Header = () => {
           />
           <Link to="/home">
             <ProfileIcon />
+          </Link>
+          <div>
             <AnimatePresence>
               {isEventsOpened && (
                 <motion.div
@@ -101,16 +105,7 @@ const Header = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-            {/* {isEventsOpened && (
-              <div ref={eventsListRef}>
-                <EventsList
-                  subscriptions={mockSubscriptions} // TODO: Перепроверить типы данных
-                  likes={mockLikes}
-                  className={styles.header__events}
-                />
-              </div>
-            )} */}
-          </Link>
+          </div>
         </div>
       </div>
     </header>

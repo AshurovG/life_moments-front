@@ -10,6 +10,7 @@ type SettingsFormProps = {
   email?: string;
   descripton?: string;
   image: string;
+  handleLogoutClick: () => void;
 };
 
 const SettingsForm: React.FC<SettingsFormProps> = ({
@@ -17,6 +18,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   email,
   descripton,
   image,
+  handleLogoutClick,
 }) => {
   const navigate = useNavigate();
   const form = useRef<HTMLFormElement>(null);
@@ -169,6 +171,10 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
       <Button className={styles["form__btn"]} disabled={!isValid} type="submit">
         Сохранить
       </Button>
+
+      <p onClick={handleLogoutClick} className={styles.form__logout}>
+        Выйти из аккаунта
+      </p>
     </form>
   );
 };

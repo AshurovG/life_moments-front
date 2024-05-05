@@ -32,19 +32,24 @@ const RegistrationPage = () => {
   const { isValid, touchedFields, errors } = formState;
 
   const registerUser = async (data: FieldValues) => {
-    const sendingData = {
-      // TODO Сделать валидацию имени пользователя на одно слово
-      username: data.username,
-      email: data.email,
-      password: data.password,
-      profile_picture: "test picture",
-    };
+    const formData = new FormData();
+    formData.append("username", data.username);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    if (selectedFile) {
+      formData.append("profile_picture", selectedFile);
+    }
+
+    console.log(selectedFile);
 
     try {
       const response = await axios("http://localhost:8000/api/user/register", {
         method: "POST",
-        data: sendingData,
+        data: formData,
         withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       dispatch(setUserInfoAction(response.data));
