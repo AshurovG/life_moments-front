@@ -13,6 +13,7 @@ export type RecUserData = {
   id: number;
   username: string;
   email: string;
+  description: string;
   profile_picture: string;
   rating: number;
   registration_date: string;

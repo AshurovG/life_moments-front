@@ -23,6 +23,7 @@ function App() {
   const check = async () => {
     try {
       const response = await axios("http://localhost:8000/api/user/info", {
+        method: "GET",
         withCredentials: true,
       });
       dispatch(setUserInfoAction(response.data));
@@ -48,29 +49,28 @@ function App() {
           <h1>Загрузка...</h1> // TODO добавить loader
         ) : (
           <>
-            <Header />
+            {userInfo && <Header />}
             <Routes>
-              <Route path="/events" element={<EventsFeedPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              {!userInfo ? (
+              {userInfo ? (
                 <>
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/registration" element={<RegistrationPage />} />
-                </>
-              ) : (
-                <>
+                  <Route path="/events" element={<EventsFeedPage />} />
+                  <Route path="/search" element={<SearchPage />} />
                   {/* Маршрут для авторизованного пользователя */}
                   <Route path="/home" element={<HomePage isAuthUser />} />{" "}
                   <Route path="/moment" element={<MomentPage />} />
+                  {/* Маршрут для страницы выбранного пользователя */}
+                  <Route path="/users/">
+                    <Route path=":id" element={<HomePage />} />
+                  </Route>
+                  <Route path="*" element={<Navigate to="/events" replace />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/registration" element={<RegistrationPage />} />
+                  <Route path="*" element={<Navigate to="/login" replace />} />
                 </>
               )}
-
-              {/* Маршрут для страницы выбранного пользователя */}
-              <Route path="/users/">
-                <Route path=":id" element={<HomePage />} />
-              </Route>
-
-              <Route path="*" element={<Navigate to="/events" replace />} />
             </Routes>
           </>
         )}

@@ -37,13 +37,16 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       toast.success("Выход выполнен успешно!");
     } catch (error) {
       throw error;
+    } finally {
     }
   };
 
   const handleLogoutClick = async () => {
     try {
       await logout();
-      navigate("/login");
+      // navigate("/login");
+      setIsSettingsOpened(false);
+      document.body.style.overflow = "auto"; // TODO подумать как изменить
     } catch (error) {
       throw error;
     }
