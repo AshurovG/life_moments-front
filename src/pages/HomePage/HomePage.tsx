@@ -74,6 +74,8 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         withCredentials: true,
         data: formData,
       });
+      toast.success("Настройки обновлены!");
+      setIsSettingsOpened(false);
     } catch (error) {
       toast.error("Что-то пошло не так...");
     }

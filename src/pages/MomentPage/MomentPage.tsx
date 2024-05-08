@@ -1,10 +1,13 @@
 import { useRef, useState } from "react";
 import { useForm, FieldValues, Controller } from "react-hook-form";
-import Button from "components/Button";
+import axios from "axios";
+import { useNavigate, Link, Form } from "react-router-dom";
 import styles from "./MomentPage.module.scss";
-import { useNavigate, Link } from "react-router-dom";
+import { CreatedMomentData } from "types";
+import Button from "components/Button";
 import { MAX_FILE_SIZE } from "../../consts";
 import BackIcon from "components/Icons/BackIcon";
+import { toast } from "react-toastify";
 
 const MomentPage = () => {
   const navigate = useNavigate();
@@ -26,6 +29,28 @@ const MomentPage = () => {
     formState,
   } = forma;
   const { isValid, touchedFields, errors } = formState;
+
+  const createMoment = async (data: CreatedMomentData) => {
+    console.log(data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    if (data.description) {
+      formData.append("description", data.description);
+    }
+    formData.append("image", data.image);
+
+    try {
+      await axios("http://localhost:8000/api/moments/create", {
+        method: "POST",
+        data: formData,
+        withCredentials: true,
+      });
+      navigate("/home");
+      toast.success("Пост успешно опубликован!");
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -59,8 +84,13 @@ const MomentPage = () => {
   const onSubmit = (data: FieldValues) => {
     console.log(data.title);
     console.log(data.description);
-    console.log(data.password);
-    navigate("/home");
+    if (selectedFile) {
+      createMoment({
+        title: data.title,
+        description: data.description,
+        image: selectedFile,
+      });
+    }
   };
 
   return (
@@ -77,6 +107,10 @@ const MomentPage = () => {
             <input
               {...register("title", {
                 required: "Обязательное поле",
+                maxLength: {
+                  value: 100,
+                  message: "Название не должно превышать 100 символов",
+                },
               })}
               className={styles["moment__page-form-input"]}
               placeholder="Название поста*"
@@ -90,10 +124,20 @@ const MomentPage = () => {
           </div>
           <div style={{ position: "relative", width: `100%` }}>
             <textarea
-              {...register("description", {})}
+              {...register("description", {
+                maxLength: {
+                  value: 300,
+                  message: "Описание не должно превышать 300 символов",
+                },
+              })}
               className={styles["moment__page-form-textarea"]}
               placeholder="Описание*"
             />
+            {errors?.description && touchedFields.description && (
+              <div className={styles["moment__page-form-input-message"]}>
+                {errors?.description?.message?.toString()}
+              </div>
+            )}
           </div>
 
           <div className={styles["moment__page-form-file-block"]}>
@@ -110,7 +154,7 @@ const MomentPage = () => {
                       {...field}
                       type="file"
                       id="input"
-                      accept="image/jpeg, image/png, image/gif, image/bmp, image/webp"
+                      accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/avif"
                       style={{ display: "none" }}
                       onChange={(e) => {
                         field.onChange(e);

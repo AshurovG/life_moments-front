@@ -26,6 +26,12 @@ export type SettingsData = {
   profile_picture?: File;
 };
 
+export type CreatedMomentData = {
+  title: string;
+  description?: string;
+  image: File;
+};
+
 export type SubscriptionData = {
   id: number;
   author: UserData;
