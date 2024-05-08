@@ -10,7 +10,7 @@
     margin: 0 auto;
 
     // background-color: $brand-secondary;
-    padding: 30px;
+    padding-top: 70px;
   }
 
   &-title {
@@ -123,12 +123,4 @@
 .test {
   display: flex;
   flex-direction: column;
-}
-
-.test1 {
-  margin-bottom: 20px;
-}
-
-.test2 {
-  margin-top: 10px;
 }

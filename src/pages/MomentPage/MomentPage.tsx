@@ -34,7 +34,7 @@ const MomentPage = () => {
         setValue("image", null);
         setError("image", {
           type: "manual",
-          message: "Размер файла не должен превышать 5 МБ",
+          message: "Размер файла не должен превышать 10 МБ",
         });
         setSelectedFile(null);
         setImageSrc(null); // Очищаем источник изображения
@@ -139,10 +139,6 @@ const MomentPage = () => {
             Сохранить
           </Button>
         </form>
-        <div className={styles.test}>
-          <div className={styles.test1}>djgfklsdg</div>
-          <div className={styles.test2}>aaaaaaaa</div>
-        </div>
       </div>
     </div>
   );
