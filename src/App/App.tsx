@@ -76,7 +76,11 @@ function App() {
         )}
       </HashRouter>
 
-      <ToastContainer autoClose={1500} pauseOnHover={false} />
+      <ToastContainer
+        autoClose={1500}
+        pauseOnHover={false}
+        style={{ zIndex: 1000000 }}
+      />
     </div>
   );
 }

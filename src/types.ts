@@ -19,6 +19,13 @@ export type RecUserData = {
   registration_date: string;
 };
 
+export type SettingsData = {
+  username?: string;
+  email?: string;
+  description?: string;
+  profile_picture?: File;
+};
+
 export type SubscriptionData = {
   id: number;
   author: UserData;

@@ -29,9 +29,6 @@ const ModalWindow: React.FC<ModalProps> = ({
     } else {
       document.body.style.overflow = "auto";
     }
-    return () => {
-      console.log("unmount");
-    };
   }, [active]);
 
   return (

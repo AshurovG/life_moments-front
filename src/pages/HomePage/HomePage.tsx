@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
 import styles from "./HomePage.module.scss";
+import { SettingsData } from "../../types";
 import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
 import ModalWindow from "components/ModalWindow";
@@ -38,6 +39,43 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     } catch (error) {
       throw error;
     } finally {
+    }
+  };
+
+  const updateSettings = async (data: SettingsData) => {
+    if (!Object.keys(data).length) {
+      toast.error("Вы ничего не изменили");
+      return;
+    }
+
+    const formData = new FormData();
+
+    console.log(data);
+
+    if (data.username) {
+      formData.append("username", data.username);
+    }
+
+    if (data.email) {
+      formData.append("email", data.email);
+    }
+
+    if (data.description) {
+      formData.append("description", data.description);
+    }
+
+    if (data.profile_picture) {
+      formData.append("profile_picture", data.profile_picture);
+    }
+
+    try {
+      await axios("http://localhost:8000/api/user/update", {
+        method: "PUT",
+        withCredentials: true,
+        data: formData,
+      });
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
     }
   };
 
@@ -176,9 +214,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         <SettingsForm
           username={mockCurrentUser.username}
           email={mockCurrentUser.email}
-          descripton="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi consequatur maiores vero vel quasi ipsam atque asperiores repellat aspernatur tenetur!"
+          description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi consequatur maiores vero vel quasi ipsam atque asperiores repellat aspernatur tenetur!"
           image={mockCurrentUser.image}
+          active={isSettingsOpened}
           handleLogoutClick={handleLogoutClick}
+          handleSaveClick={updateSettings}
         />
       </ModalWindow>
     </div>

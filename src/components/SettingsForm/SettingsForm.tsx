@@ -2,23 +2,28 @@ import React, { useRef, useState, useEffect } from "react";
 import { useForm, FieldValues, Controller } from "react-hook-form";
 import Button from "components/Button";
 import styles from "./SettingsForm.module.scss";
+import { SettingsData } from "types";
 import { useNavigate, Link } from "react-router-dom";
 import { MAX_FILE_SIZE } from "../../consts";
 
 type SettingsFormProps = {
   username?: string;
   email?: string;
-  descripton?: string;
+  description?: string;
   image: string;
-  handleLogoutClick: () => void;
+  active: boolean;
+  handleSaveClick: (data: SettingsData) => void;
+  handleLogoutClick?: () => void;
 };
 
 const SettingsForm: React.FC<SettingsFormProps> = ({
   username,
   email,
-  descripton,
+  description,
   image,
+  active,
   handleLogoutClick,
+  handleSaveClick,
 }) => {
   const navigate = useNavigate();
   const form = useRef<HTMLFormElement>(null);
@@ -42,12 +47,14 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   const { isValid, touchedFields, errors } = formState;
 
   useEffect(() => {
-    reset({
-      username: username,
-      email: email,
-      description: descripton,
-    });
-  }, []);
+    if (!active) {
+      reset({
+        username: username,
+        email: email,
+        description: description,
+      });
+    }
+  }, [active]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -74,15 +81,23 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
     } else {
       setSelectedFile(null);
       clearErrors("image");
-      setImageSrc(null); // Очищаем источник изображения
+      setImageSrc(null);
     }
   };
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data.username);
-    console.log(data.email);
-    console.log(data.description);
-    navigate("/home");
+    const dataForSending = {
+      ...(data.username !== username ? { username: data.username } : {}),
+      ...(data.email !== email ? { email: data.email } : {}),
+      ...(data.description !== description
+        ? { description: data.description }
+        : {}),
+      ...(selectedFile ? { profile_picture: selectedFile } : {}),
+    };
+    if (dataForSending) {
+      handleSaveClick(dataForSending);
+      navigate("/home");
+    }
   };
 
   return (
@@ -95,6 +110,14 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         <input
           {...register("username", {
             required: "Обязательное поле",
+            maxLength: {
+              value: 30,
+              message: "Имя пользователя не должно превышать 30 символов",
+            },
+            pattern: {
+              value: /^[a-zA-Z0-9]+$/,
+              message: "Неверный формат имени пользователя",
+            },
           })}
           className={styles["form__input"]}
           placeholder="Имя пользователя*"
@@ -102,7 +125,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         />
         {errors?.username && touchedFields.username && (
           <div className={styles["form__input-message"]}>
-            {errors?.titusernamele?.message?.toString()}
+            {errors?.username?.message?.toString()}
           </div>
         )}
       </div>
@@ -110,10 +133,18 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
         <input
           {...register("email", {
             required: "Обязательное поле",
+            maxLength: {
+              value: 256,
+              message: "Почта не должна превышать 256 символов",
+            },
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "Неверный формат email",
+            },
           })}
           className={styles["form__input"]}
           placeholder="Email*"
-          type="text"
+          type="email"
         />
         {errors?.email && touchedFields.email && (
           <div className={styles["form__input-message"]}>
@@ -123,10 +154,20 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
       </div>
       <div style={{ position: "relative", width: `100%` }}>
         <textarea
-          {...register("description", {})}
+          {...register("description", {
+            maxLength: {
+              value: 150,
+              message: "Описание не должно превышать 150 символов",
+            },
+          })}
           className={styles["form__textarea"]}
           placeholder="Описание профиля*"
         />
+        {errors?.description && touchedFields.description && (
+          <div className={styles["form__input-message"]}>
+            {errors?.description?.message?.toString()}
+          </div>
+        )}
       </div>
 
       <div className={styles["form__file-block"]}>
@@ -134,23 +175,25 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
           <Controller
             control={control}
             name="image"
-            rules={{
-              required: "Обязательное поле",
-            }}
+            // rules={{
+            //   // required: "Обязательное поле",
+            // }}
             render={({ field, fieldState: { error } }) => (
               <div>
                 <input
                   {...field}
                   type="file"
                   id="input"
-                  accept="image/jpeg, image/png, image/gif, image/bmp, image/webp"
+                  accept="image/jpeg, image/png, image/bmp, image/webp, image/avif"
                   style={{ display: "none" }}
                   onChange={(e) => {
                     field.onChange(e);
                     handleFileChange(e);
                   }}
                 />
-                <label htmlFor="input">{<>Измените фото профиля</>}</label>
+                <label style={{ cursor: "pointer" }} htmlFor="input">
+                  {<>Измените фото профиля</>}
+                </label>
                 {error && (
                   <div className={styles["form__file-message"]}>
                     {error.message}
