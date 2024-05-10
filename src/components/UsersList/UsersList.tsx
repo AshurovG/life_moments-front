@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./UsersList.module.scss";
-import { UserData } from "types";
+import { UserData, RecUsersSubscriptions } from "types";
 
 type UsersListProps = {
-  users: UserData[];
+  // users: UserData[];
+  users: RecUsersSubscriptions[];
   onFollowClick?: () => void;
   onUserClick?: () => void;
   actionText?: string;
@@ -25,7 +26,7 @@ const UsersList: React.FC<UsersListProps> = ({
 
   return (
     <div className={styles.users}>
-      {users.map((user: UserData) => (
+      {users.map((user: RecUsersSubscriptions) => (
         <div className={styles.users__item}>
           <div
             className={styles["users__item-info"]}
@@ -33,7 +34,7 @@ const UsersList: React.FC<UsersListProps> = ({
           >
             <img
               className={styles["users__item-image"]}
-              src={user.image}
+              src={user.profile_picture}
               alt="user"
             />
             <div className={styles["users__item-caption"]}>

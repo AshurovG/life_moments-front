@@ -9,6 +9,7 @@ import {
   SettingsData,
   RecMomentsData,
   RecSubscriptionsData,
+  RecUsersSubscriptions,
 } from "../../types";
 import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
@@ -31,6 +32,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const [subscriptions, setSubscriptions] = useState<RecSubscriptionsData[]>(
     []
   );
+  const [users, setUsers] = useState<RecUsersSubscriptions[]>([]);
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
@@ -80,8 +82,6 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
     const formData = new FormData();
 
-    console.log(data);
-
     if (data.username) {
       formData.append("username", data.username);
     }
@@ -111,6 +111,34 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
+  const getSubscribers = async () => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/user/subscribers?id=${userInfo?.user_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setUsers(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getSubscriptions = async () => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/user/subscriptions?id=${userInfo?.user_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setUsers(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const handleLogoutClick = async () => {
     try {
       await logout();
@@ -120,6 +148,16 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     } catch (error) {
       throw error;
     }
+  };
+
+  const handleSubscribersClick = () => {
+    getSubscribers();
+    setIsFollowersOpened(true);
+  };
+
+  const handleSubscriptionsClick = () => {
+    getSubscriptions();
+    setIsFollowingsOpened(true);
   };
 
   useEffect(() => {
@@ -156,7 +194,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
               <div
                 className={styles["home__page-info-item"]}
-                onClick={() => setIsFollowersOpened(true)}
+                onClick={handleSubscribersClick}
               >
                 <p className={styles["home__page-info-title"]}>
                   {/* {mockCurrentUser.followers.length} */}
@@ -168,7 +206,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
               <div
                 className={styles["home__page-info-item"]}
-                onClick={() => setIsFollowingsOpened(true)}
+                onClick={handleSubscriptionsClick}
               >
                 <p className={styles["home__page-info-title"]}>
                   {/* {mockCurrentUser.following.length} */}
@@ -222,7 +260,8 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         className={styles["home__page-modal-users"]}
       >
         <UsersList
-          users={mockUsers}
+          // users={mockUsers}
+          users={users}
           actionText="Подписан на вас"
           onUserClick={() => setIsFollowersOpened(false)}
         />
@@ -235,7 +274,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         className={styles["home__page-modal-users"]}
       >
         <UsersList
-          users={mockUsers}
+          users={users}
           onFollowClick={() => {}}
           actionText="Вы подписаны"
           onUserClick={() => setIsFollowingsOpened(false)}

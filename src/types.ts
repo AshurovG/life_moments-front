@@ -38,6 +38,13 @@ export type RecSubscriptionsData = {
   id_subscriber: number;
 };
 
+export type RecUsersSubscriptions = {
+  id: number;
+  username: string;
+  profile_picture: string;
+  rating: number;
+};
+
 export type SettingsData = {
   username?: string;
   email?: string;
