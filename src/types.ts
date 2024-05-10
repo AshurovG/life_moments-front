@@ -10,13 +10,32 @@ export type UserData = {
 };
 
 export type RecUserData = {
-  id: number;
+  user_id: number;
   username: string;
   email: string;
   description: string;
   profile_picture: string;
   rating: number;
   registration_date: string;
+};
+
+export type RecMomentsData = {
+  id: number;
+  title: string;
+  description: string;
+  publication_date: Date;
+  image: string;
+  id_author: number;
+  comments?: CommentData[];
+  likes?: LikeData[];
+  tags?: TagData[];
+};
+
+export type RecSubscriptionsData = {
+  id: number;
+  subscription_date: Date;
+  id_author: number;
+  id_subscriber: number;
 };
 
 export type SettingsData = {

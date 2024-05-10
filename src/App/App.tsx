@@ -28,7 +28,7 @@ function App() {
       });
       dispatch(setUserInfoAction(response.data));
       setIsUserInfoLoading(false);
-      console.log(response.status);
+      console.log(response.data);
     } catch (error) {
       throw error;
     }

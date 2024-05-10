@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import styles from "./Gallery.module.scss";
-import { MomentData } from "types";
+import { MomentData, RecMomentsData } from "types";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
 
 type GalleryProps = {
-  moments: MomentData[];
+  // moments: MomentData[];
+  moments: RecMomentsData[];
   onMomentClick?: () => void;
   className?: string;
 };
@@ -17,7 +18,7 @@ const Gallery: React.FC<GalleryProps> = ({
   className,
 }) => {
   const [isPostOpened, setIsPostOpened] = useState(false);
-  const [currentMoment, setCurrentMoment] = useState<MomentData>();
+  const [currentMoment, setCurrentMoment] = useState<RecMomentsData>();
 
   const onClick = (id: number) => {
     setIsPostOpened(true);

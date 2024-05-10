@@ -5,7 +5,11 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
 import styles from "./HomePage.module.scss";
-import { SettingsData } from "../../types";
+import {
+  SettingsData,
+  RecMomentsData,
+  RecSubscriptionsData,
+} from "../../types";
 import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
 import ModalWindow from "components/ModalWindow";
@@ -22,9 +26,35 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const [isFollowersOpened, setIsFollowersOpened] = useState(false);
   const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
   const [isSettingsOpened, setIsSettingsOpened] = useState(false);
+  const [moments, setMoments] = useState<RecMomentsData[]>([]);
+  const [subscribers, setSubscribers] = useState<RecSubscriptionsData[]>([]);
+  const [subscriptions, setSubscriptions] = useState<RecSubscriptionsData[]>(
+    []
+  );
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
+  };
+
+  const getDetailedUserInfo = async () => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/user/detailed?id=${
+          userInfo && userInfo.user_id
+        }`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setMoments(response.data.moments);
+      setSubscribers(response.data.subscribers);
+      setSubscriptions(response.data.subscriptions);
+
+      console.log(response);
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = async () => {
@@ -92,6 +122,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
+  useEffect(() => {
+    getDetailedUserInfo();
+  }, []);
+
   return (
     <div className={styles.home__page}>
       <div className={styles["home__page-wrapper"]}>
@@ -99,11 +133,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           <div className={styles["home__page-profile"]}>
             <img
               className={styles["home__page-image"]}
-              src={mockCurrentUser.image}
+              src={userInfo?.profile_picture}
               alt="user"
             />
             <h4 className={styles["home__page-profile-text"]}>
-              {mockCurrentUser.username}
+              {userInfo?.username}
             </h4>
           </div>
           <div className={styles["home__page-info"]}>
@@ -113,7 +147,8 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 className={styles["home__page-info-item"]}
               >
                 <p className={styles["home__page-info-title"]}>
-                  {mockCurrentUser.posts.length}
+                  {/* {mockCurrentUser.posts.length} */}
+                  {moments.length}
                 </p>
 
                 <p className={styles["home__page-info-subtitle"]}>публикации</p>
@@ -124,7 +159,8 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 onClick={() => setIsFollowersOpened(true)}
               >
                 <p className={styles["home__page-info-title"]}>
-                  {mockCurrentUser.followers.length}
+                  {/* {mockCurrentUser.followers.length} */}
+                  {subscribers.length}
                 </p>
 
                 <p className={styles["home__page-info-subtitle"]}>подписчики</p>
@@ -135,7 +171,8 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
                 onClick={() => setIsFollowingsOpened(true)}
               >
                 <p className={styles["home__page-info-title"]}>
-                  {mockCurrentUser.following.length}
+                  {/* {mockCurrentUser.following.length} */}
+                  {subscriptions.length}
                 </p>
 
                 <p className={styles["home__page-info-subtitle"]}>подписки</p>
@@ -168,13 +205,12 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         </div>
 
         <p className={styles["home__page-description"]}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi
-          consequatur maiores vero vel quasi ipsam atque asperiores repellat
-          aspernatur tenetur!
+          {userInfo?.description}
         </p>
 
         <Gallery
-          moments={mockCurrentUser.posts}
+          // moments={mockCurrentUser.posts}
+          moments={moments}
           // onMomentClick={() => setIsPostOpened(true)}
           className={styles["home__page-gallery"]}
         />
