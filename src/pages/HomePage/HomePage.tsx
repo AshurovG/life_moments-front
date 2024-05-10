@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAsyncError, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
@@ -33,9 +33,24 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     []
   );
   const [users, setUsers] = useState<RecUsersSubscriptions[]>([]);
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(false);
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
+  };
+
+  const check = async () => {
+    try {
+      const response = await axios("http://localhost:8000/api/user/info", {
+        method: "GET",
+        withCredentials: true,
+      });
+      dispatch(setUserInfoAction(response.data));
+      setIsUserInfoLoading(false);
+      console.log(response.data);
+    } catch (error) {
+      throw error;
+    }
   };
 
   const getDetailedUserInfo = async () => {
@@ -105,9 +120,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         data: formData,
       });
       toast.success("Настройки обновлены!");
-      setIsSettingsOpened(false);
     } catch (error) {
       toast.error("Что-то пошло не так...");
+    } finally {
+      check();
     }
   };
 
@@ -142,7 +158,6 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const handleLogoutClick = async () => {
     try {
       await logout();
-      // navigate("/login");
       setIsSettingsOpened(false);
       document.body.style.overflow = "auto"; // TODO подумать как изменить
     } catch (error) {
@@ -160,8 +175,19 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     setIsFollowingsOpened(true);
   };
 
+  const handleSaveSettingsClick = (data: SettingsData) => {
+    // setIsUserInfoLoading(true);
+    updateSettings(data);
+    // check();
+    setIsSettingsOpened(false);
+  };
+
   useEffect(() => {
     getDetailedUserInfo();
+  }, []);
+
+  useEffect(() => {
+    check();
   }, []);
 
   return (
@@ -289,13 +315,13 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       >
         <h4 className={styles["home__page-modal-title"]}>Настройки профиля</h4>
         <SettingsForm
-          username={mockCurrentUser.username}
-          email={mockCurrentUser.email}
-          description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi consequatur maiores vero vel quasi ipsam atque asperiores repellat aspernatur tenetur!"
-          image={mockCurrentUser.image}
+          // username={userInfo?.username}
+          // email={userInfo?.email}
+          // description={userInfo?.description}
+          // image={userInfo?.profile_picture}
           active={isSettingsOpened}
           handleLogoutClick={handleLogoutClick}
-          handleSaveClick={updateSettings}
+          handleSaveClick={handleSaveSettingsClick}
         />
       </ModalWindow>
     </div>

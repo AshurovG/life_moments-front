@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useForm, FieldValues, Controller } from "react-hook-form";
+import { useUserInfo } from "slices/UserSlice";
 import Button from "components/Button";
 import styles from "./SettingsForm.module.scss";
 import { SettingsData } from "types";
@@ -7,25 +8,18 @@ import { useNavigate, Link } from "react-router-dom";
 import { MAX_FILE_SIZE } from "../../consts";
 
 type SettingsFormProps = {
-  username?: string;
-  email?: string;
-  description?: string;
-  image: string;
   active: boolean;
   handleSaveClick: (data: SettingsData) => void;
   handleLogoutClick?: () => void;
 };
 
 const SettingsForm: React.FC<SettingsFormProps> = ({
-  username,
-  email,
-  description,
-  image,
   active,
   handleLogoutClick,
   handleSaveClick,
 }) => {
   const navigate = useNavigate();
+  const userInfo = useUserInfo();
   const form = useRef<HTMLFormElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -47,14 +41,20 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
   const { isValid, touchedFields, errors } = formState;
 
   useEffect(() => {
+    console.log("dfkdjkfjdkjfkl");
     if (!active) {
       reset({
-        username: username,
-        email: email,
-        description: description,
+        username: userInfo?.username,
+        email: userInfo?.email,
+        description: userInfo?.description,
       });
     }
-  }, [active]);
+  }, [
+    active,
+    userInfo?.username,
+    userInfo?.description,
+    userInfo?.profile_picture,
+  ]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -87,9 +87,11 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
   const onSubmit = (data: FieldValues) => {
     const dataForSending = {
-      ...(data.username !== username ? { username: data.username } : {}),
-      ...(data.email !== email ? { email: data.email } : {}),
-      ...(data.description !== description
+      ...(data.username !== userInfo?.username
+        ? { username: data.username }
+        : {}),
+      ...(data.email !== userInfo?.email ? { email: data.email } : {}),
+      ...(data.description !== userInfo?.description
         ? { description: data.description }
         : {}),
       ...(selectedFile ? { profile_picture: selectedFile } : {}),
@@ -204,8 +206,8 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
           />
         </div>
 
-        {image && !imageSrc ? (
-          <img src={image} alt="user" />
+        {userInfo?.profile_picture && !imageSrc ? (
+          <img src={userInfo.profile_picture} alt="user" />
         ) : (
           imageSrc && <img src={imageSrc} alt="user" />
         )}
