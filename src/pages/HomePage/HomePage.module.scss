@@ -112,6 +112,16 @@
   }
 
   &-moment {
-    height: 100%;
+    height: 100%; // TODO убрать
+  }
+
+  &-empty {
+    padding-top: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
   }
 }

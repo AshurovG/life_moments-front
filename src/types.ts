@@ -65,6 +65,7 @@ export type RecUsersSubscriptions = {
   username: string;
   profile_picture: string;
   rating: number;
+  description: string;
 };
 
 export type SettingsData = {

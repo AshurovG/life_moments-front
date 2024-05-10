@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAsyncError, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
+import { toast } from "react-toastify";
 import styles from "./HomePage.module.scss";
 import {
   SettingsData,
@@ -11,21 +12,18 @@ import {
   RecSubscriptionsData,
   RecUsersSubscriptions,
 } from "../../types";
-import { mockCurrentUser, mockMoments, mockUsers } from "../../consts";
 import Button from "components/Button";
 import ModalWindow from "components/ModalWindow";
-import Moment from "components/Moment";
 import UsersList from "components/UsersList";
 import Gallery from "components/Gallery";
 import SettingsForm from "components/SettingsForm";
-import { toast } from "react-toastify";
+import CameraIcon from "components/Icons/CameraIcon";
 
 const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const userInfo = useUserInfo();
-  // const [isFollowersOpened, setIsFollowersOpened] = useState(false);
-  // const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
   const [activeNavigation, setActiveNavigation] = useState<
     "subscribers" | "subscriptions" | ""
   >("");
@@ -38,6 +36,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const [users, setUsers] = useState<RecUsersSubscriptions[]>([]);
   const [isUserListOpened, setIsUserListOpened] = useState(false);
   const [isUserInfoLoading, setIsUserInfoLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState<RecUsersSubscriptions>();
 
   const onNewPostButtonClick = () => {
     navigate("/moment");
@@ -57,12 +56,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
-  const getDetailedUserInfo = async () => {
+  const getDetailedUserInfo = async (id: number) => {
     try {
       const response = await axios(
-        `http://localhost:8000/api/user/detailed?id=${
-          userInfo && userInfo.user_id
-        }`,
+        `http://localhost:8000/api/user/detailed?id=${id}`,
         {
           withCredentials: true,
         }
@@ -71,6 +68,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       setMoments(response.data.moments);
       setSubscribers(response.data.subscribers);
       setSubscriptions(response.data.subscriptions);
+      setCurrentUser(response.data.user);
 
       console.log(response);
     } catch (error) {
@@ -134,7 +132,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const getSubscribers = async () => {
     try {
       const response = await axios(
-        `http://localhost:8000/api/user/subscribers?id=${userInfo?.user_id}`,
+        `http://localhost:8000/api/user/subscribers?id=${currentUser?.id}`,
         {
           withCredentials: true,
         }
@@ -148,7 +146,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const getSubscriptions = async () => {
     try {
       const response = await axios(
-        `http://localhost:8000/api/user/subscriptions?id=${userInfo?.user_id}`,
+        `http://localhost:8000/api/user/subscriptions?id=${currentUser?.id}`,
         {
           withCredentials: true,
         }
@@ -182,9 +180,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   };
 
   const handleSaveSettingsClick = (data: SettingsData) => {
-    // setIsUserInfoLoading(true);
     updateSettings(data);
-    // check();
     setIsSettingsOpened(false);
   };
 
@@ -201,12 +197,19 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   };
 
   useEffect(() => {
-    getDetailedUserInfo();
-  }, []);
+    //Проверяем, открыта домашняя страница или нет
+    console.log("effect");
+    if (id) {
+      getDetailedUserInfo(Number(id));
+    } else {
+      userInfo && getDetailedUserInfo(userInfo?.user_id);
+    }
+  }, [id]);
 
-  useEffect(() => {
-    check();
-  }, []);
+  // useEffect(() => {
+  //   console.log(id);
+  //   // check();
+  // }, []);
 
   return (
     <div className={styles.home__page}>
@@ -215,11 +218,13 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           <div className={styles["home__page-profile"]}>
             <img
               className={styles["home__page-image"]}
-              src={userInfo?.profile_picture}
+              // src={userInfo?.profile_picture}
+              src={currentUser?.profile_picture}
               alt="user"
             />
             <h4 className={styles["home__page-profile-text"]}>
-              {userInfo?.username}
+              {currentUser?.username}
+              {/* {userInfo?.username} */}
             </h4>
           </div>
           <div className={styles["home__page-info"]}>
@@ -261,7 +266,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
               </div>
             </div>
 
-            {!isAuthUser ? (
+            {userInfo?.user_id !== currentUser?.id ? (
               <div className={styles["home__page-info-actions"]}>
                 <Button className={styles["home__page-info-btn"]}>
                   Подписаться
@@ -287,15 +292,17 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         </div>
 
         <p className={styles["home__page-description"]}>
-          {userInfo?.description}
+          {currentUser?.description}
         </p>
 
-        <Gallery
-          // moments={mockCurrentUser.posts}
-          moments={moments}
-          // onMomentClick={handleMomentClick}
-          className={styles["home__page-gallery"]}
-        />
+        <Gallery moments={moments} className={styles["home__page-gallery"]} />
+
+        {moments.length === 0 && (
+          <div className={styles["home__page-empty"]}>
+            <CameraIcon />
+            <h3>Пока нет публикаций</h3>
+          </div>
+        )}
       </div>
 
       <ModalWindow
@@ -310,7 +317,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
           <UsersList
             users={users}
             actionText="Подписан на вас"
-            onUserClick={() => setActiveNavigation("")}
+            onUserClick={() => {
+              setActiveNavigation("");
+              setIsUserListOpened(false);
+            }}
             activeNavigation={activeNavigation}
             subscribersCount={subscribers.length}
             subscriptionsCount={subscriptions.length}
@@ -322,7 +332,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
               users={users}
               onFollowClick={() => {}}
               actionText="Вы подписаны"
-              onUserClick={() => setActiveNavigation("")}
+              onUserClick={() => {
+                setActiveNavigation("");
+                setIsUserListOpened(false);
+              }}
               activeNavigation={activeNavigation}
               subscribersCount={subscribers.length}
               subscriptionsCount={subscriptions.length}
@@ -330,22 +343,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
             />
           )
         )}
-        {/* TODO: сюда прокидывать самих пользователей, а не айди */}
       </ModalWindow>
-
-      {/* <ModalWindow
-        active={activeNavigation === "subscriptions"}
-        handleBackdropClick={() => setActiveNavigation("")}
-        className={styles["home__page-modal-users"]}
-      > */}
-      {/* <UsersList
-          users={users}
-          onFollowClick={() => {}}
-          actionText="Вы подписаны"
-          onUserClick={() => setActiveNavigation("")}
-        /> */}
-      {/* TODO: сюда прокидывать самих пользователей, а не айди */}
-      {/* </ModalWindow> */}
 
       <ModalWindow
         active={isSettingsOpened}

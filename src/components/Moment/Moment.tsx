@@ -15,12 +15,14 @@ type MomentProps = {
   isModal?: boolean;
   isModalOpened?: boolean;
   className?: string;
+  onUserClick?: () => void;
 };
 
 const Moment: React.FC<MomentProps> = ({
   moment,
   isModal,
   isModalOpened,
+  onUserClick,
   className,
 }) => {
   const [isAllCommentsVisible, setIsAllCommentsVisible] = useState(false);
@@ -38,7 +40,7 @@ const Moment: React.FC<MomentProps> = ({
     >
       <div className={styles.moment__wrapper}>
         <div className={styles.moment__header}>
-          <Link to={`/users/${moment.author?.id}`}>
+          <Link onClick={onUserClick} to={`/users/${moment.author?.id}`}>
             <img
               className={styles["moment__header-logo"]}
               src={moment.author?.profile_picture}
@@ -46,7 +48,7 @@ const Moment: React.FC<MomentProps> = ({
             />
           </Link>
           <div className={styles["moment__text"]}>
-            <Link to={`/users/${moment.author?.id}`}>
+            <Link onClick={onUserClick} to={`/users/${moment.author?.id}`}>
               <h4 className={styles["moment__username"]}>
                 {moment.author?.username}
               </h4>
@@ -91,7 +93,10 @@ const Moment: React.FC<MomentProps> = ({
             <>
               <div className={styles["moment__comments-item"]}>
                 <div className={styles["moment__comments-wrapper"]}>
-                  <Link to={`/users/${moment.comments[0].author.id}`}>
+                  <Link
+                    onClick={onUserClick}
+                    to={`/users/${moment.comments[0].author.id}`}
+                  >
                     <img
                       className={styles["moment__comments-logo"]}
                       src={moment.comments[0].author.profile_picture}
@@ -100,7 +105,10 @@ const Moment: React.FC<MomentProps> = ({
                   </Link>
                   <div className={styles["moment__text"]}>
                     <div className={styles["moment__comments-caption"]}>
-                      <Link to={`/users/${moment.comments[0].author.id}`}>
+                      <Link
+                        onClick={onUserClick}
+                        to={`/users/${moment.comments[0].author.id}`}
+                      >
                         <h4 className={styles["moment__comments-username"]}>
                           {moment.comments[0].author.username}
                         </h4>
@@ -134,7 +142,10 @@ const Moment: React.FC<MomentProps> = ({
                 moment.comments.slice(1).map((comment, index) => (
                   <div className={styles["moment__comments-item"]}>
                     <div className={styles["moment__comments-wrapper"]}>
-                      <Link to={`/users/${comment.author.id}`}>
+                      <Link
+                        onClick={onUserClick}
+                        to={`/users/${comment.author.id}`}
+                      >
                         <img
                           className={styles["moment__comments-logo"]}
                           src={comment.author.profile_picture}
@@ -144,7 +155,10 @@ const Moment: React.FC<MomentProps> = ({
 
                       <div className={styles["moment__text"]}>
                         <div className={styles["moment__comments-caption"]}>
-                          <Link to={`/users/${comment.author.id}`}>
+                          <Link
+                            onClick={onUserClick}
+                            to={`/users/${comment.author.id}`}
+                          >
                             <h4 className={styles["moment__comments-username"]}>
                               {comment.author.username}
                             </h4>

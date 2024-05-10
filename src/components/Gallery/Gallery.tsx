@@ -47,11 +47,6 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     setIsPostOpened(true);
   };
 
-  // const onClick = (id: number) => {
-  //   setIsPostOpened(true);
-  //   setCurrentMoment(moments.find((moment) => moment.id === id));
-  // };
-
   return (
     <>
       <div className={clsx(styles.gallery, className)}>
@@ -75,6 +70,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
             moment={currentMoment}
             isModal
             isModalOpened={isPostOpened}
+            onUserClick={() => setIsPostOpened(false)}
           />
         )}
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}

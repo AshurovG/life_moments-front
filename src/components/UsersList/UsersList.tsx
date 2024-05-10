@@ -2,7 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import styles from "./UsersList.module.scss";
-import { UserData, RecUsersSubscriptions } from "types";
+import { RecUsersSubscriptions } from "types";
+import SubscriptionsIcon from "components/Icons/SubscriptionsIcon";
 
 type UsersListProps = {
   // isSubscriptions?: boolean;
@@ -29,8 +30,8 @@ const UsersList: React.FC<UsersListProps> = ({
   const navigate = useNavigate();
 
   const onClick = (id: number) => {
-    navigate(`/users/${id}`);
     onUserClick && onUserClick();
+    navigate(`/users/${id}`);
   };
 
   return (
@@ -96,6 +97,17 @@ const UsersList: React.FC<UsersListProps> = ({
           </p>
         </div>
       ))}
+
+      {users.length === 0 && (
+        <div className={styles.users__empty}>
+          <SubscriptionsIcon />
+          {activeNavigation === "subscribers" ? (
+            <h4>Пока нет подписчиков</h4>
+          ) : (
+            activeNavigation === "subscriptions" && <h4>Пока нет подписок</h4>
+          )}
+        </div>
+      )}
     </div>
   );
 };
