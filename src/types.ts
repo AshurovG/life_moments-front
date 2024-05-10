@@ -19,15 +19,37 @@ export type RecUserData = {
   registration_date: string;
 };
 
+export type RecLikesData = {
+  id: number;
+  // creation_date: Date;
+  creation_date: string;
+  id_author: number;
+  id_moment?: number;
+  id_comment?: number;
+};
+
+export type RecCommentsData = {
+  id: number;
+  text: number;
+  // publication_date: Date;
+  publication_date: string;
+  id_author: number;
+  id_moment: number;
+  author: RecUsersSubscriptions;
+  likes: number[];
+};
+
 export type RecMomentsData = {
   id: number;
   title: string;
   description: string;
-  publication_date: Date;
+  // publication_date: Date;
+  publication_date: string;
   image: string;
   id_author: number;
-  comments?: CommentData[];
-  likes?: LikeData[];
+  author?: RecUsersSubscriptions;
+  likes?: RecLikesData[];
+  comments?: RecCommentsData[];
   tags?: TagData[];
 };
 

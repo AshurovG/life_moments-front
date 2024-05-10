@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import Input from "components/Input";
 import styles from "./Moment.module.scss";
-import { MomentData } from "types";
+import { MomentData, RecMomentsData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
 import IconButton from "components/IconButton";
@@ -10,7 +10,8 @@ import ArrowIcon from "components/Icons/ArrowIcon";
 import { Link } from "react-router-dom";
 
 type MomentProps = {
-  moment: MomentData;
+  // moment: MomentData;
+  moment: RecMomentsData;
   isModal?: boolean;
   isModalOpened?: boolean;
   className?: string;
@@ -37,20 +38,23 @@ const Moment: React.FC<MomentProps> = ({
     >
       <div className={styles.moment__wrapper}>
         <div className={styles.moment__header}>
-          <Link to={`/users/${moment.author.id}`}>
+          <Link to={`/users/${moment.author?.id}`}>
             <img
               className={styles["moment__header-logo"]}
-              src={moment.author.image}
+              src={moment.author?.profile_picture}
               alt="user"
             />
           </Link>
           <div className={styles["moment__text"]}>
-            <Link to={`/users/${moment.author.id}`}>
+            <Link to={`/users/${moment.author?.id}`}>
               <h4 className={styles["moment__username"]}>
-                {moment.author.username}
+                {moment.author?.username}
               </h4>
             </Link>
-            <p className={styles["moment__header-date"]}>{moment.date}</p>
+            <p className={styles["moment__header-date"]}>
+              {/* {moment.publication_date.toLocaleDateString()} */}
+              {moment.publication_date}
+            </p>
           </div>
         </div>
 
@@ -67,7 +71,7 @@ const Moment: React.FC<MomentProps> = ({
 
       <img className={styles.moment__image} src={moment.image} alt="" />
       <div className={styles.moment__wrapper}>
-        <p className={styles.moment__text}>{moment.text}</p>
+        <p className={styles.moment__text}>{moment.description}</p>
 
         <div className={styles.moment__actions}>
           <HeartIcon width={22} height={22} />
@@ -83,14 +87,14 @@ const Moment: React.FC<MomentProps> = ({
               <ArrowIcon />
             </IconButton>
           </div>
-          {moment.comments && (
+          {moment.comments?.length !== 0 && moment.comments && (
             <>
               <div className={styles["moment__comments-item"]}>
                 <div className={styles["moment__comments-wrapper"]}>
                   <Link to={`/users/${moment.comments[0].author.id}`}>
                     <img
                       className={styles["moment__comments-logo"]}
-                      src={moment.author.image}
+                      src={moment.comments[0].author.profile_picture}
                       alt="user"
                     />
                   </Link>
@@ -102,12 +106,15 @@ const Moment: React.FC<MomentProps> = ({
                         </h4>
                       </Link>
                       <p className={styles["moment__comments-date"]}>
-                        {moment.comments[0].date}
+                        {/* {moment.comments[0].publication_date.toLocaleDateString()} */}
+                        {moment.comments[0].publication_date}
                       </p>
                     </div>
 
                     <p>{moment.comments[0].text}</p>
-                    <p className={styles.moment__link}>Нравится: 2</p>
+                    <p className={styles.moment__link}>
+                      Нравится: {moment.comments[0].likes.length}
+                    </p>
                     {!isAllCommentsVisible && moment.comments.length > 1 && (
                       <p
                         style={{ cursor: "pointer" }}
@@ -123,13 +130,14 @@ const Moment: React.FC<MomentProps> = ({
               </div>
 
               {isAllCommentsVisible &&
+                moment.comments.length &&
                 moment.comments.slice(1).map((comment, index) => (
                   <div className={styles["moment__comments-item"]}>
                     <div className={styles["moment__comments-wrapper"]}>
                       <Link to={`/users/${comment.author.id}`}>
                         <img
                           className={styles["moment__comments-logo"]}
-                          src={moment.author.image}
+                          src={comment.author.profile_picture}
                           alt="user"
                         />
                       </Link>
@@ -142,11 +150,14 @@ const Moment: React.FC<MomentProps> = ({
                             </h4>
                           </Link>
                           <p className={styles["moment__comments-date"]}>
-                            {comment.date}
+                            {/* {comment.publication_date.toLocaleDateString()} */}
+                            {comment.publication_date}
                           </p>
                         </div>
                         <p>{comment.text}</p>
-                        <p className={styles.moment__link}>Нравится: 1</p>
+                        <p className={styles.moment__link}>
+                          Нравится: {comment.likes.length}
+                        </p>
                         {index + 2 == moment.comments?.length && (
                           <p
                             style={{ cursor: "pointer" }}

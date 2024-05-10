@@ -249,7 +249,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         <Gallery
           // moments={mockCurrentUser.posts}
           moments={moments}
-          // onMomentClick={() => setIsPostOpened(true)}
+          // onMomentClick={handleMomentClick}
           className={styles["home__page-gallery"]}
         />
       </div>
