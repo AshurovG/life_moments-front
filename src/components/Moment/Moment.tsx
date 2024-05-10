@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import Input from "components/Input";
+import { Link } from "react-router-dom";
+import { useUserInfo } from "slices/UserSlice";
 import styles from "./Moment.module.scss";
 import { MomentData, RecMomentsData } from "types";
 import HeartIcon from "components/Icons/HeartIcon";
 import CommentIcon from "components/Icons/CommentIcon";
 import IconButton from "components/IconButton";
 import ArrowIcon from "components/Icons/ArrowIcon";
-import { Link } from "react-router-dom";
+import Input from "components/Input";
 
 type MomentProps = {
   // moment: MomentData;
@@ -16,6 +17,7 @@ type MomentProps = {
   isModalOpened?: boolean;
   className?: string;
   onUserClick?: () => void;
+  onLikeClick: (moment_id?: number, comment_id?: number) => void;
 };
 
 const Moment: React.FC<MomentProps> = ({
@@ -23,8 +25,10 @@ const Moment: React.FC<MomentProps> = ({
   isModal,
   isModalOpened,
   onUserClick,
+  onLikeClick,
   className,
 }) => {
+  const userInfo = useUserInfo();
   const [isAllCommentsVisible, setIsAllCommentsVisible] = useState(false);
 
   useEffect(() => {
@@ -76,7 +80,14 @@ const Moment: React.FC<MomentProps> = ({
         <p className={styles.moment__text}>{moment.description}</p>
 
         <div className={styles.moment__actions}>
-          <HeartIcon width={22} height={22} />
+          <HeartIcon
+            onClick={() => onLikeClick(moment.id)}
+            width={22}
+            height={22}
+            flag={moment.likes?.some(
+              (like) => like.id_author === userInfo?.user_id
+            )}
+          />
           <CommentIcon width={22} height={22} />
         </div>
 
@@ -134,7 +145,18 @@ const Moment: React.FC<MomentProps> = ({
                     )}
                   </div>
                 </div>
-                <HeartIcon width={22} height={22} />
+                <HeartIcon
+                  onClick={() => {
+                    if (moment.comments) {
+                      onLikeClick(undefined, moment.comments[0].id);
+                    }
+                  }}
+                  flag={moment.comments[0].likes.some(
+                    (like) => like === userInfo?.user_id
+                  )}
+                  width={22}
+                  height={22}
+                />
               </div>
 
               {isAllCommentsVisible &&
@@ -184,7 +206,18 @@ const Moment: React.FC<MomentProps> = ({
                         <div></div>
                       </div>
                     </div>
-                    <HeartIcon width={22} height={22} />
+                    <HeartIcon
+                      onClick={() => {
+                        if (moment.comments) {
+                          onLikeClick(undefined, comment.id);
+                        }
+                      }}
+                      flag={comment.likes.some(
+                        (like) => like === userInfo?.user_id
+                      )}
+                      width={22}
+                      height={22}
+                    />
                   </div>
                 ))}
             </>

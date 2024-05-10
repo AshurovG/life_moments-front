@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import axios from "axios";
+import { useUserInfo } from "slices/UserSlice";
 import styles from "./Gallery.module.scss";
 import { MomentData, RecMomentsData } from "types";
 import ModalWindow from "components/ModalWindow";
@@ -13,6 +14,7 @@ type GalleryProps = {
 };
 
 const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
+  const userInfo = useUserInfo();
   const [isPostOpened, setIsPostOpened] = useState(false);
   const [currentMoment, setCurrentMoment] = useState<RecMomentsData>();
 
@@ -42,9 +44,42 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     }
   };
 
+  const makeLike = async (
+    moment_id: number | undefined,
+    comment_id: number | undefined
+  ) => {
+    let params = `author_id=${userInfo?.user_id}`;
+    if (moment_id) {
+      params += `&moment_id=${moment_id}`;
+    } else if (comment_id) {
+      params += `&comment_id=${comment_id}`;
+    }
+    try {
+      await axios(`http://localhost:8000/api/moments/like?${params}`, {
+        method: "POST",
+        withCredentials: true,
+      });
+    } catch (error) {}
+  };
+
   const handleMomentClick = (id: number) => {
     getDetailedMoment(id);
     setIsPostOpened(true);
+  };
+
+  const handleLikeClick = async (
+    moment_id: number | undefined,
+    comment_id: number | undefined
+  ) => {
+    if (moment_id) {
+      await makeLike(moment_id, undefined);
+    } else if (comment_id) {
+      await makeLike(undefined, comment_id);
+    }
+
+    if (currentMoment) {
+      getDetailedMoment(currentMoment?.id);
+    }
   };
 
   return (
@@ -71,6 +106,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
             isModal
             isModalOpened={isPostOpened}
             onUserClick={() => setIsPostOpened(false)}
+            onLikeClick={handleLikeClick}
           />
         )}
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
