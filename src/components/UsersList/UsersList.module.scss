@@ -6,6 +6,33 @@
   flex-direction: column;
   gap: 15px;
 
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 5px;
+
+    &-item {
+      width: 100%;
+      text-align: center;
+      color: $brand-link;
+      cursor: pointer;
+
+      &-active {
+        position: relative;
+        color: $brand-default;
+
+        &::after {
+          content: "";
+          display: block;
+          width: 100%;
+          border-bottom: 1px solid $brand-default;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+
   &__item {
     display: flex;
     align-items: center;

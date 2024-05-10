@@ -24,8 +24,11 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = useUserInfo();
-  const [isFollowersOpened, setIsFollowersOpened] = useState(false);
-  const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
+  // const [isFollowersOpened, setIsFollowersOpened] = useState(false);
+  // const [isFollowingsOpened, setIsFollowingsOpened] = useState(false);
+  const [activeNavigation, setActiveNavigation] = useState<
+    "subscribers" | "subscriptions" | ""
+  >("");
   const [isSettingsOpened, setIsSettingsOpened] = useState(false);
   const [moments, setMoments] = useState<RecMomentsData[]>([]);
   const [subscribers, setSubscribers] = useState<RecSubscriptionsData[]>([]);
@@ -33,6 +36,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     []
   );
   const [users, setUsers] = useState<RecUsersSubscriptions[]>([]);
+  const [isUserListOpened, setIsUserListOpened] = useState(false);
   const [isUserInfoLoading, setIsUserInfoLoading] = useState(false);
 
   const onNewPostButtonClick = () => {
@@ -167,12 +171,14 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
   const handleSubscribersClick = () => {
     getSubscribers();
-    setIsFollowersOpened(true);
+    setActiveNavigation("subscribers");
+    setIsUserListOpened(true);
   };
 
   const handleSubscriptionsClick = () => {
     getSubscriptions();
-    setIsFollowingsOpened(true);
+    setActiveNavigation("subscriptions");
+    setIsUserListOpened(true);
   };
 
   const handleSaveSettingsClick = (data: SettingsData) => {
@@ -180,6 +186,18 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     updateSettings(data);
     // check();
     setIsSettingsOpened(false);
+  };
+
+  const handleNavigationSelect = () => {
+    console.log("handler");
+    if (activeNavigation === "subscribers") {
+      getSubscriptions();
+      setActiveNavigation("subscriptions");
+    } else {
+      getSubscribers();
+
+      setActiveNavigation("subscribers");
+    }
   };
 
   useEffect(() => {
@@ -281,32 +299,53 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       </div>
 
       <ModalWindow
-        active={isFollowersOpened}
-        handleBackdropClick={() => setIsFollowersOpened(false)}
+        active={isUserListOpened}
+        handleBackdropClick={() => {
+          setActiveNavigation("");
+          setIsUserListOpened(false);
+        }}
         className={styles["home__page-modal-users"]}
       >
-        <UsersList
-          // users={mockUsers}
-          users={users}
-          actionText="Подписан на вас"
-          onUserClick={() => setIsFollowersOpened(false)}
-        />
+        {activeNavigation === "subscribers" ? (
+          <UsersList
+            users={users}
+            actionText="Подписан на вас"
+            onUserClick={() => setActiveNavigation("")}
+            activeNavigation={activeNavigation}
+            subscribersCount={subscribers.length}
+            subscriptionsCount={subscriptions.length}
+            onMenuClick={handleNavigationSelect}
+          />
+        ) : (
+          activeNavigation === "subscriptions" && (
+            <UsersList
+              users={users}
+              onFollowClick={() => {}}
+              actionText="Вы подписаны"
+              onUserClick={() => setActiveNavigation("")}
+              activeNavigation={activeNavigation}
+              subscribersCount={subscribers.length}
+              subscriptionsCount={subscriptions.length}
+              onMenuClick={handleNavigationSelect}
+            />
+          )
+        )}
         {/* TODO: сюда прокидывать самих пользователей, а не айди */}
       </ModalWindow>
 
-      <ModalWindow
-        active={isFollowingsOpened}
-        handleBackdropClick={() => setIsFollowingsOpened(false)}
+      {/* <ModalWindow
+        active={activeNavigation === "subscriptions"}
+        handleBackdropClick={() => setActiveNavigation("")}
         className={styles["home__page-modal-users"]}
-      >
-        <UsersList
+      > */}
+      {/* <UsersList
           users={users}
           onFollowClick={() => {}}
           actionText="Вы подписаны"
-          onUserClick={() => setIsFollowingsOpened(false)}
-        />
-        {/* TODO: сюда прокидывать самих пользователей, а не айди */}
-      </ModalWindow>
+          onUserClick={() => setActiveNavigation("")}
+        /> */}
+      {/* TODO: сюда прокидывать самих пользователей, а не айди */}
+      {/* </ModalWindow> */}
 
       <ModalWindow
         active={isSettingsOpened}
@@ -315,10 +354,6 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       >
         <h4 className={styles["home__page-modal-title"]}>Настройки профиля</h4>
         <SettingsForm
-          // username={userInfo?.username}
-          // email={userInfo?.email}
-          // description={userInfo?.description}
-          // image={userInfo?.profile_picture}
           active={isSettingsOpened}
           handleLogoutClick={handleLogoutClick}
           handleSaveClick={handleSaveSettingsClick}
