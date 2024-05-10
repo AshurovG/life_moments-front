@@ -6,6 +6,8 @@ import styles from "./Gallery.module.scss";
 import { MomentData, RecMomentsData } from "types";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
+import { toast } from "react-toastify";
+import { current } from "@reduxjs/toolkit";
 
 type GalleryProps = {
   // moments: MomentData[];
@@ -36,7 +38,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
         comments: response.data.comments,
       };
 
-      console.log(momentData);
+      // console.log(momentData);
 
       setCurrentMoment(momentData);
     } catch (error) {
@@ -59,7 +61,29 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
         method: "POST",
         withCredentials: true,
       });
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
+  };
+
+  const removeLike = async (
+    moment_id: number | undefined,
+    comment_id: number | undefined
+  ) => {
+    let params = `author_id=${userInfo?.user_id}`;
+    if (moment_id) {
+      params += `&moment_id=${moment_id}`;
+    } else if (comment_id) {
+      params += `&comment_id=${comment_id}`;
+    }
+    try {
+      await axios(`http://localhost:8000/api/moments/remove_like?${params}`, {
+        method: "DELETE",
+        withCredentials: true,
+      });
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
   };
 
   const handleMomentClick = (id: number) => {
@@ -72,9 +96,28 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     comment_id: number | undefined
   ) => {
     if (moment_id) {
-      await makeLike(moment_id, undefined);
+      if (
+        currentMoment?.likes?.some(
+          (like) => like.id_author === userInfo?.user_id // Проверка наличия лайка
+        )
+      ) {
+        await removeLike(moment_id, undefined);
+      } else {
+        await makeLike(moment_id, undefined);
+      }
     } else if (comment_id) {
-      await makeLike(undefined, comment_id);
+      const currentComment = currentMoment?.comments?.find((comment) => {
+        return comment.id === comment_id;
+      });
+      if (
+        currentComment?.likes?.some(
+          (like) => like === userInfo?.user_id // Проверка наличия лайка
+        )
+      ) {
+        await removeLike(undefined, comment_id);
+      } else {
+        await makeLike(undefined, comment_id);
+      }
     }
 
     if (currentMoment) {
