@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import axios from "axios";
 import { useUserInfo } from "slices/UserSlice";
@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { current } from "@reduxjs/toolkit";
 
 type GalleryProps = {
-  // moments: MomentData[];
   moments: RecMomentsData[];
   className?: string;
 };
@@ -19,6 +18,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
   const userInfo = useUserInfo();
   const [isPostOpened, setIsPostOpened] = useState(false);
   const [currentMoment, setCurrentMoment] = useState<RecMomentsData>();
+  const [commentValue, setCommentValue] = useState("");
 
   const getDetailedMoment = async (id: number) => {
     try {
@@ -86,7 +86,25 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     }
   };
 
+  const leaveComment = async (moment_id: number) => {
+    try {
+      await axios(
+        `http://localhost:8000/api/moments/comment?author_id=${userInfo?.user_id}&moment_id=${moment_id}`,
+        {
+          method: "POST",
+          data: {
+            text: commentValue,
+          },
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
+  };
+
   const handleMomentClick = (id: number) => {
+    setCommentValue("");
     getDetailedMoment(id);
     setIsPostOpened(true);
   };
@@ -125,6 +143,19 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     }
   };
 
+  const handleSendCommentClick = async (moment_id: number) => {
+    if (commentValue) {
+      await leaveComment(moment_id);
+      getDetailedMoment(moment_id);
+    }
+  };
+
+  const handleCommentValueChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCommentValue(event.target.value);
+  };
+
   return (
     <>
       <div className={clsx(styles.gallery, className)}>
@@ -150,6 +181,9 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
             isModalOpened={isPostOpened}
             onUserClick={() => setIsPostOpened(false)}
             onLikeClick={handleLikeClick}
+            onCommentValueChange={handleCommentValueChange}
+            commentValue={commentValue}
+            onSendCommentClick={handleSendCommentClick}
           />
         )}
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}

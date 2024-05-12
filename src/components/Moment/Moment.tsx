@@ -18,14 +18,20 @@ type MomentProps = {
   className?: string;
   onUserClick?: () => void;
   onLikeClick: (moment_id?: number, comment_id?: number) => void;
+  commentValue?: string;
+  onCommentValueChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSendCommentClick: (moment_id: number) => void;
 };
 
 const Moment: React.FC<MomentProps> = ({
   moment,
   isModal,
   isModalOpened,
+  commentValue,
   onUserClick,
   onLikeClick,
+  onCommentValueChange,
+  onSendCommentClick,
   className,
 }) => {
   const userInfo = useUserInfo();
@@ -95,8 +101,12 @@ const Moment: React.FC<MomentProps> = ({
 
         <div className={styles["moment__comments"]}>
           <div className={styles["moment__comments-input"]}>
-            <Input placeholder="Отправьте комментарий*"></Input>
-            <IconButton>
+            <Input
+              value={commentValue}
+              onChange={onCommentValueChange}
+              placeholder="Отправьте комментарий*"
+            ></Input>
+            <IconButton onClick={() => onSendCommentClick(moment.id)}>
               <ArrowIcon />
             </IconButton>
           </div>
