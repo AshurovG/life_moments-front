@@ -148,6 +148,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
       await leaveComment(moment_id);
       getDetailedMoment(moment_id);
     }
+    setCommentValue("");
   };
 
   const handleCommentValueChange = (

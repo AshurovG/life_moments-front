@@ -157,6 +157,33 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
+  const subscribe = async () => {
+    try {
+      await axios(
+        `http://localhost:8000/api/user/subscribe?author_id=${currentUser?.id}&subscriber_id=${userInfo?.user_id}`,
+        {
+          method: "POST",
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+      throw error;
+    }
+  };
+
+  const unsubscribe = async (id: number) => {
+    try {
+      await axios(`http://localhost:8000/api/user/unsubscribe?id=${id}`, {
+        method: "DELETE",
+        withCredentials: true,
+      });
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+      throw error;
+    }
+  };
+
   const handleLogoutClick = async () => {
     try {
       await logout();
@@ -193,6 +220,28 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       getSubscribers();
 
       setActiveNavigation("subscribers");
+    }
+  };
+
+  const handleSubscribeClick = async () => {
+    // Проверка наличия подписки на данного пользователя
+    if (
+      !subscribers?.some(
+        (subscription) => subscription.id_subscriber === userInfo?.user_id
+      )
+    ) {
+      await subscribe();
+    } else {
+      const deletedSubscription = subscribers.find((subscription) => {
+        return subscription.id_subscriber === userInfo?.user_id;
+      });
+      if (deletedSubscription) {
+        await unsubscribe(deletedSubscription?.id);
+      }
+    }
+
+    if (currentUser) {
+      getDetailedUserInfo(currentUser?.id);
     }
   };
 
@@ -268,7 +317,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
             {userInfo?.user_id !== currentUser?.id ? (
               <div className={styles["home__page-info-actions"]}>
-                <Button className={styles["home__page-info-btn"]}>
+                <Button
+                  onClick={handleSubscribeClick}
+                  className={styles["home__page-info-btn"]}
+                >
                   Подписаться
                 </Button>
               </div>
