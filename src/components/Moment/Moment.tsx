@@ -21,6 +21,7 @@ type MomentProps = {
   commentValue?: string;
   onCommentValueChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSendCommentClick: (moment_id: number) => void;
+  onLikeListClick: () => void;
 };
 
 const Moment: React.FC<MomentProps> = ({
@@ -32,6 +33,7 @@ const Moment: React.FC<MomentProps> = ({
   onLikeClick,
   onCommentValueChange,
   onSendCommentClick,
+  onLikeListClick,
   className,
 }) => {
   const userInfo = useUserInfo();
@@ -97,7 +99,9 @@ const Moment: React.FC<MomentProps> = ({
           <CommentIcon width={22} height={22} />
         </div>
 
-        <p className={styles.moment__text}>Нравится: {moment.likes?.length}</p>
+        <p onClick={onLikeListClick} className={styles.moment__text}>
+          Нравится: {moment.likes?.length}
+        </p>
 
         <div className={styles["moment__comments"]}>
           <div className={styles["moment__comments-input"]}>

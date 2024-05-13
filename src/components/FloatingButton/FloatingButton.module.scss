@@ -1,0 +1,51 @@
+@import "../../styles/variables.scss";
+
+// .btn {
+//   position: absolute;
+//   width: 120px;
+//   height: 60px;
+//   background-color: rgba(
+//     255,
+//     255,
+//     255,
+//     0.5
+//   ); // Полупрозрачный белый фон для создания эффекта размытия
+//   background-image: linear-gradient(
+//     to right,
+//     rgba(255, 255, 255, 0.5),
+//     rgba(255, 255, 255, 0.5)
+//   ); // Градиентный фон для размытия
+//   filter: blur(5px); // Применение эффекта размытия
+//   color: #333; // Цвет текста для обеспечения четкости
+//   font-size: 16px; // Размер шрифта для удобства чтения
+//   border-radius: 5px; // Скругление углов для более мягкого вида
+//   padding: 10px 20px; // Отступы для центрирования текста
+//   text-align: center; // Выравнивание текста по центру
+//   cursor: pointer; // Изменение курсора на указатель при наведении
+// }
+
+.btn {
+  position: absolute;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ); /* Белый цвет с 70% прозрачностью */
+  border: none; /* Убираем стандартные границы */
+  color: #333; /* Тёмно-серый цвет текста */
+  padding: 10px 20px; /* Поля вокруг текста */
+  cursor: pointer; /* Изменяем курсор на указатель при наведении */
+  font-size: 16px; /* Размер текста */
+  transition: background-color 0.3s ease; /* Анимация изменения цвета фона */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgb(173, 173, 173);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}

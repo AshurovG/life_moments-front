@@ -157,10 +157,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
-  const subscribe = async () => {
+  const subscribe = async (author_id: number) => {
     try {
       await axios(
-        `http://localhost:8000/api/user/subscribe?author_id=${currentUser?.id}&subscriber_id=${userInfo?.user_id}`,
+        `http://localhost:8000/api/user/subscribe?author_id=${author_id}&subscriber_id=${userInfo?.user_id}`,
         {
           method: "POST",
           withCredentials: true,
@@ -228,9 +228,10 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     if (
       !subscribers?.some(
         (subscription) => subscription.id_subscriber === userInfo?.user_id
-      )
+      ) &&
+      currentUser
     ) {
-      await subscribe();
+      await subscribe(currentUser?.id);
     } else {
       const deletedSubscription = subscribers.find((subscription) => {
         return subscription.id_subscriber === userInfo?.user_id;
@@ -243,6 +244,25 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     if (currentUser) {
       getDetailedUserInfo(currentUser?.id);
     }
+  };
+
+  const handleUnsubscribeClick = async () => {
+    // Не домашняя страница
+    const deletedSubscription = subscriptions.find((subscription) => {
+      return subscription.id_subscriber === userInfo?.user_id;
+    });
+
+    if (deletedSubscription) {
+      await unsubscribe(deletedSubscription.id);
+      getSubscriptions();
+      if (userInfo) {
+        getDetailedUserInfo(userInfo?.user_id);
+      }
+    }
+  };
+
+  const handleSubscribeUserClick = async (author_id: number) => {
+    await subscribe(author_id);
   };
 
   useEffect(() => {
@@ -317,12 +337,24 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
 
             {userInfo?.user_id !== currentUser?.id ? (
               <div className={styles["home__page-info-actions"]}>
-                <Button
-                  onClick={handleSubscribeClick}
-                  className={styles["home__page-info-btn"]}
-                >
-                  Подписаться
-                </Button>
+                {!subscribers?.some(
+                  (subscription) =>
+                    subscription.id_subscriber === userInfo?.user_id
+                ) ? (
+                  <Button
+                    onClick={handleSubscribeClick}
+                    className={styles["home__page-info-btn"]}
+                  >
+                    Подписаться
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleSubscribeClick}
+                    className={styles["home__page-info-btn"]}
+                  >
+                    Отписаться
+                  </Button> // TODO изменить стили для кнопки отписки
+                )}
               </div>
             ) : (
               <div className={styles["home__page-info-actions"]}>
@@ -357,33 +389,19 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
         )}
       </div>
 
-      <ModalWindow
-        active={isUserListOpened}
-        handleBackdropClick={() => {
-          setActiveNavigation("");
-          setIsUserListOpened(false);
-        }}
-        className={styles["home__page-modal-users"]}
-      >
-        {activeNavigation === "subscribers" ? (
-          <UsersList
-            users={users}
-            actionText="Подписан на вас"
-            onUserClick={() => {
-              setActiveNavigation("");
-              setIsUserListOpened(false);
-            }}
-            activeNavigation={activeNavigation}
-            subscribersCount={subscribers.length}
-            subscriptionsCount={subscriptions.length}
-            onMenuClick={handleNavigationSelect}
-          />
-        ) : (
-          activeNavigation === "subscriptions" && (
+      {currentUser?.id === userInfo?.user_id ? (
+        <ModalWindow
+          active={isUserListOpened}
+          handleBackdropClick={() => {
+            setActiveNavigation("");
+            setIsUserListOpened(false);
+          }}
+          className={styles["home__page-modal-users"]}
+        >
+          {activeNavigation === "subscribers" ? (
             <UsersList
               users={users}
-              onFollowClick={() => {}}
-              actionText="Вы подписаны"
+              actionText="Подписан на вас"
               onUserClick={() => {
                 setActiveNavigation("");
                 setIsUserListOpened(false);
@@ -393,9 +411,68 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
               subscriptionsCount={subscriptions.length}
               onMenuClick={handleNavigationSelect}
             />
-          )
-        )}
-      </ModalWindow>
+          ) : (
+            activeNavigation === "subscriptions" && (
+              <UsersList
+                users={users}
+                onFollowClick={() => {}}
+                actionText="Вы подписаны"
+                onUserClick={() => {
+                  setActiveNavigation("");
+                  setIsUserListOpened(false);
+                }}
+                activeNavigation={activeNavigation}
+                subscribersCount={subscribers.length}
+                subscriptionsCount={subscriptions.length}
+                onMenuClick={handleNavigationSelect}
+                onUnsubscribeClick={handleUnsubscribeClick}
+              />
+            )
+          )}
+        </ModalWindow>
+      ) : (
+        <ModalWindow
+          active={isUserListOpened}
+          handleBackdropClick={() => {
+            setActiveNavigation("");
+            setIsUserListOpened(false);
+          }}
+          className={styles["home__page-modal-users"]}
+        >
+          {activeNavigation === "subscribers" ? (
+            <UsersList
+              users={users}
+              onUserClick={() => {
+                setActiveNavigation("");
+                setIsUserListOpened(false);
+              }}
+              activeNavigation={activeNavigation}
+              subscribersCount={subscribers.length}
+              subscriptionsCount={subscriptions.length}
+              // actionText="Подписаться"
+              onMenuClick={handleNavigationSelect}
+              onSubscribeClick={handleSubscribeUserClick}
+            />
+          ) : (
+            activeNavigation === "subscriptions" && (
+              <UsersList
+                users={users}
+                onFollowClick={() => {}}
+                // actionText={"Подписаться"}
+                onUserClick={() => {
+                  setActiveNavigation("");
+                  setIsUserListOpened(false);
+                }}
+                activeNavigation={activeNavigation}
+                subscribersCount={subscribers.length}
+                subscriptionsCount={subscriptions.length}
+                onMenuClick={handleNavigationSelect}
+                // onSubscribeClick={handleSubscribeUserClick} // TODO сделать возможность подписки
+              />
+            )
+          )}
+        </ModalWindow>
+      )}
 
       <ModalWindow
         active={isSettingsOpened}

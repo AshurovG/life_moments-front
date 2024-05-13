@@ -7,7 +7,6 @@ import { MomentData, RecMomentsData } from "types";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
 import { toast } from "react-toastify";
-import { current } from "@reduxjs/toolkit";
 
 type GalleryProps = {
   moments: RecMomentsData[];
@@ -185,6 +184,7 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
             onCommentValueChange={handleCommentValueChange}
             commentValue={commentValue}
             onSendCommentClick={handleSendCommentClick}
+            onLikeListClick={() => console.log("likes list")}
           />
         )}
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
