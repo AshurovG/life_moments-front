@@ -45,6 +45,8 @@ const Moment: React.FC<MomentProps> = ({
     if (isModalOpened) {
       setIsAllCommentsVisible(false);
     }
+
+    console.log(moment);
   }, [isModalOpened]);
 
   return (
@@ -94,9 +96,7 @@ const Moment: React.FC<MomentProps> = ({
             onClick={() => onLikeClick(moment.id)}
             width={22}
             height={22}
-            flag={moment.likes?.some(
-              (like) => like.id_author === userInfo?.user_id
-            )}
+            flag={moment.likes?.some((like) => like === userInfo?.user_id)}
           />
           <CommentIcon width={22} height={22} />
         </div>
@@ -177,7 +177,7 @@ const Moment: React.FC<MomentProps> = ({
                 <HeartIcon
                   onClick={() => {
                     if (moment.comments) {
-                      onLikeClick(undefined, moment.comments[0].id);
+                      onLikeClick(moment.id, moment.comments[0].id);
                     }
                   }}
                   flag={moment.comments[0].likes.some(
@@ -244,7 +244,7 @@ const Moment: React.FC<MomentProps> = ({
                     <HeartIcon
                       onClick={() => {
                         if (moment.comments) {
-                          onLikeClick(undefined, comment.id);
+                          onLikeClick(moment.id, comment.id);
                         }
                       }}
                       flag={comment.likes.some(

@@ -38,13 +38,6 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
 
       let momentData = response.data.moment;
 
-      momentData = {
-        ...momentData,
-        author: response.data.author,
-        likes: response.data.likes,
-        comments: response.data.comments,
-      };
-
       setCurrentMoment(momentData);
     } catch (error) {
       throw error;
@@ -158,10 +151,10 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     moment_id: number | undefined,
     comment_id: number | undefined
   ) => {
-    if (moment_id) {
+    if (!comment_id) {
       if (
         currentMoment?.likes?.some(
-          (like) => like.id_author === userInfo?.user_id // Проверка наличия лайка
+          (like) => like === userInfo?.user_id // Проверка наличия лайка
         )
       ) {
         await removeLike(moment_id, undefined);

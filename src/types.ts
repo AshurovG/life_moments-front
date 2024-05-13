@@ -48,7 +48,7 @@ export type RecMomentsData = {
   image: string;
   id_author: number;
   author?: RecUsersSubscriptions;
-  likes?: RecLikesData[];
+  likes?: number[];
   comments?: RecCommentsData[];
   tags?: TagData[];
 };
