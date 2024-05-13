@@ -126,6 +126,9 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
       toast.error("Что-то пошло не так...");
     } finally {
       check();
+      if (currentUser) {
+        getDetailedUserInfo(currentUser?.id);
+      }
     }
   };
 

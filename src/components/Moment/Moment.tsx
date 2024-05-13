@@ -102,7 +102,11 @@ const Moment: React.FC<MomentProps> = ({
         </div>
 
         <p
-          onClick={() => onLikeListClick(moment.id)}
+          onClick={
+            moment.likes && moment.likes?.length > 0
+              ? () => onLikeListClick(moment.id)
+              : () => {}
+          }
           className={styles.moment__action}
         >
           Нравится: {moment.likes?.length}

@@ -29,20 +29,45 @@ const MomentPage = () => {
     formState,
   } = forma;
   const { isValid, touchedFields, errors } = formState;
+  const [tagValue, setTagValue] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+
+  // const createMoment = async (data: CreatedMomentData) => {
+  //   console.log(data);
+  //   const formData = new FormData();
+  //   formData.append("title", data.title);
+  //   if (data.description) {
+  //     formData.append("description", data.description);
+  //   }
+  //   formData.append("image", data.image);
+  //   formData.append("tags", tags);
+
+  //   try {
+  //     await axios("http://localhost:8000/api/moments/create", {
+  //       method: "POST",
+  //       data: formData,
+  //       withCredentials: true,
+  //     });
+  //     navigate("/home");
+  //     toast.success("Пост успешно опубликован!");
+  //   } catch (error) {
+  //     toast.error("Что-то пошло не так...");
+  //   }
+  // };
 
   const createMoment = async (data: CreatedMomentData) => {
     console.log(data);
+
     const formData = new FormData();
     formData.append("title", data.title);
     if (data.description) {
       formData.append("description", data.description);
     }
-    formData.append("image", data.image);
+    formData.append("image", data.image); // Предполагается, что data.image - это File или Blob
+    formData.append("tags", JSON.stringify(tags)); // Преобразуем массив тегов в строку JSON
 
     try {
-      await axios("http://localhost:8000/api/moments/create", {
-        method: "POST",
-        data: formData,
+      await axios.post("http://localhost:8000/api/moments/create", formData, {
         withCredentials: true,
       });
       navigate("/home");
@@ -93,6 +118,41 @@ const MomentPage = () => {
     }
   };
 
+  const handleTagValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setTagValue(value);
+
+    if (value.length > 30) {
+      setError("tag", {
+        type: "maxLength",
+        message: "Тег не должен превышать 30 символов",
+      });
+    } else if (!value.startsWith("#")) {
+      setError("tag", {
+        type: "startsWith",
+        message: "Тег должен начинаться с символа #",
+      });
+    } else if (value.length < 3) {
+      setError("tag", {
+        type: "minLength",
+        message: "Тег должен превышать 3 символов",
+      });
+    } else {
+      clearErrors("tag");
+    }
+  };
+
+  const handleAddTagClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setTags([...tags, tagValue]);
+    setTagValue("");
+  };
+
+  const handleClearTagsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setTags([]);
+  };
+
   return (
     <div className={styles.moment__page}>
       <div className={styles["moment__page-wrapper"]}>
@@ -122,6 +182,7 @@ const MomentPage = () => {
               </div>
             )}
           </div>
+
           <div style={{ position: "relative", width: `100%` }}>
             <textarea
               {...register("description", {
@@ -136,6 +197,53 @@ const MomentPage = () => {
             {errors?.description && touchedFields.description && (
               <div className={styles["moment__page-form-input-message"]}>
                 {errors?.description?.message?.toString()}
+              </div>
+            )}
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              width: `100%`,
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            <div className={styles["moment__page-form-tags"]}>
+              <input
+                {...register("tag")}
+                className={styles["moment__page-form-input"]}
+                placeholder="Тег*"
+                type="text"
+                value={tagValue}
+                onChange={handleTagValueChange}
+              />
+              <div className={styles["moment__page-form-tags-btns"]}>
+                <Button
+                  disabled={
+                    !tagValue ||
+                    errors.tag?.type === "maxLength" ||
+                    errors.tag?.type === "startsWith" ||
+                    errors.tag?.type === "minLength"
+                  }
+                  onClick={handleAddTagClick}
+                >
+                  Добавить
+                </Button>
+                <Button
+                  disabled={tags.length === 0}
+                  onClick={handleClearTagsClick}
+                >
+                  Удалить
+                </Button>
+              </div>
+            </div>
+            <p className={styles["moment__page-form-tags-text"]}>
+              {tags.join(", ")}
+            </p>
+
+            {errors?.tag && touchedFields.tag && (
+              <div className={styles["moment__page-form-input-message"]}>
+                {errors?.tag?.message?.toString()}
               </div>
             )}
           </div>

@@ -117,10 +117,22 @@
       text-decoration: underline;
       margin-bottom: 5px;
     }
-  }
-}
 
-.test {
-  display: flex;
-  flex-direction: column;
+    &-tags {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+
+      &-btns {
+        display: flex;
+        gap: 10px;
+      }
+
+      &-text {
+        padding-top: 5px;
+        color: $brand;
+        font-style: italic;
+      }
+    }
+  }
 }
