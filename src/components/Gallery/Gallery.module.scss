@@ -22,4 +22,25 @@
   &__moment {
     height: 100%;
   }
+
+  &__users {
+    box-sizing: border-box;
+    background: #fff;
+    width: $modal-content-width;
+    border-radius: 10px;
+    height: 50vh;
+    padding: 30px;
+
+    z-index: 10000;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &-icon {
+      position: absolute;
+      left: 20px;
+      top: 30px;
+    }
+  }
 }

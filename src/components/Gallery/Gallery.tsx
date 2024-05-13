@@ -3,10 +3,12 @@ import clsx from "clsx";
 import axios from "axios";
 import { useUserInfo } from "slices/UserSlice";
 import styles from "./Gallery.module.scss";
-import { MomentData, RecMomentsData } from "types";
+import { MomentData, RecMomentsData, RecUsersSubscriptions } from "types";
 import ModalWindow from "components/ModalWindow";
 import Moment from "components/Moment";
+import UsersList from "components/UsersList";
 import { toast } from "react-toastify";
+import BackIcon from "components/Icons/BackIcon";
 
 type GalleryProps = {
   moments: RecMomentsData[];
@@ -18,6 +20,12 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
   const [isPostOpened, setIsPostOpened] = useState(false);
   const [currentMoment, setCurrentMoment] = useState<RecMomentsData>();
   const [commentValue, setCommentValue] = useState("");
+  const [ratedUsers, setRatedUsers] = useState<RecUsersSubscriptions[]>([]);
+  const [isUserListOpened, setIsUserListOpened] = useState(false);
+
+  useEffect(() => {
+    console.log(isUserListOpened);
+  }, [isUserListOpened]);
 
   const getDetailedMoment = async (id: number) => {
     try {
@@ -36,8 +44,6 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
         likes: response.data.likes,
         comments: response.data.comments,
       };
-
-      // console.log(momentData);
 
       setCurrentMoment(momentData);
     } catch (error) {
@@ -100,6 +106,46 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
     } catch (error) {
       toast.error("Что-то пошло не так...");
     }
+  };
+
+  const getLikes = async (moment_id: number) => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/moments/likes?id=${moment_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setRatedUsers(response.data);
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
+  };
+
+  const getCommentLikes = async (comment_id: number) => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/moments/comment/likes?id=${comment_id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setRatedUsers(response.data);
+    } catch (error) {
+      toast.error("Что-то пошло не так...");
+    }
+  };
+
+  const handleLikesClick = async (moment_id: number) => {
+    await getLikes(moment_id);
+    setIsUserListOpened(true);
+  };
+
+  const handleCommentLikesClick = async (comment_id: number) => {
+    await getCommentLikes(comment_id);
+    setIsUserListOpened(true);
   };
 
   const handleMomentClick = (id: number) => {
@@ -170,7 +216,10 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
 
       <ModalWindow
         active={isPostOpened}
-        handleBackdropClick={() => setIsPostOpened(false)}
+        handleBackdropClick={() => {
+          setIsPostOpened(false);
+          setIsUserListOpened(false);
+        }}
         className={styles["gallery__modal"]}
       >
         {currentMoment && (
@@ -184,11 +233,29 @@ const Gallery: React.FC<GalleryProps> = ({ moments, className }) => {
             onCommentValueChange={handleCommentValueChange}
             commentValue={commentValue}
             onSendCommentClick={handleSendCommentClick}
-            onLikeListClick={() => console.log("likes list")}
+            onLikeListClick={handleLikesClick}
+            onCommentLikeListClick={handleCommentLikesClick}
           />
         )}
         {/* TODO: сюда прокидывать ID поста для последующего выполнения запроса */}
       </ModalWindow>
+
+      {isUserListOpened && (
+        <div className={styles.gallery__users}>
+          <BackIcon
+            onClick={() => setIsUserListOpened(false)}
+            className={styles["gallery__users-icon"]}
+          />
+          <UsersList
+            title="Отметки нравится"
+            users={ratedUsers}
+            onUserClick={() => {
+              setIsUserListOpened(false);
+              setIsPostOpened(false);
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };

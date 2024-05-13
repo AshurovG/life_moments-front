@@ -6,6 +6,11 @@
   flex-direction: column;
   gap: 15px;
 
+  &__title {
+    font-size: 20px;
+    text-align: center;
+  }
+
   &__nav {
     display: flex;
     justify-content: space-between;

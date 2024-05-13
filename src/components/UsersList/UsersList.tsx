@@ -12,6 +12,7 @@ type UsersListProps = {
   users: RecUsersSubscriptions[];
   subscriptionsCount?: number;
   subscribersCount?: number;
+  title?: string;
   onFollowClick?: () => void;
   onUserClick?: () => void;
   onMenuClick?: () => void;
@@ -28,6 +29,7 @@ const UsersList: React.FC<UsersListProps> = ({
   activeNavigation,
   subscriptionsCount,
   subscribersCount,
+  title,
   onMenuClick,
   onUnsubscribeClick,
   onSubscribeClick,
@@ -74,6 +76,7 @@ const UsersList: React.FC<UsersListProps> = ({
 
   return (
     <div className={styles.users}>
+      <h4 className={styles.users__title}>{title}</h4>
       {onMenuClick && (
         <div className={styles.users__nav}>
           <div

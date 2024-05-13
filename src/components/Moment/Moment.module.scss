@@ -49,6 +49,11 @@
     font-size: 16px;
   }
 
+  &__action {
+    font-size: 16px;
+    cursor: pointer;
+  }
+
   &__link {
     color: $brand-link;
     margin-top: 5px;

@@ -21,7 +21,8 @@ type MomentProps = {
   commentValue?: string;
   onCommentValueChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSendCommentClick: (moment_id: number) => void;
-  onLikeListClick: () => void;
+  onLikeListClick: (moment_id: number) => void;
+  onCommentLikeListClick: (comment_id: number) => void;
 };
 
 const Moment: React.FC<MomentProps> = ({
@@ -34,6 +35,7 @@ const Moment: React.FC<MomentProps> = ({
   onCommentValueChange,
   onSendCommentClick,
   onLikeListClick,
+  onCommentLikeListClick,
   className,
 }) => {
   const userInfo = useUserInfo();
@@ -99,7 +101,10 @@ const Moment: React.FC<MomentProps> = ({
           <CommentIcon width={22} height={22} />
         </div>
 
-        <p onClick={onLikeListClick} className={styles.moment__text}>
+        <p
+          onClick={() => onLikeListClick(moment.id)}
+          className={styles.moment__action}
+        >
           Нравится: {moment.likes?.length}
         </p>
 
@@ -145,7 +150,13 @@ const Moment: React.FC<MomentProps> = ({
                     </div>
 
                     <p>{moment.comments[0].text}</p>
-                    <p className={styles.moment__link}>
+                    <p
+                      onClick={() =>
+                        moment.comments &&
+                        onCommentLikeListClick(moment.comments[0].id)
+                      }
+                      className={styles.moment__link}
+                    >
                       Нравится: {moment.comments[0].likes.length}
                     </p>
                     {!isAllCommentsVisible && moment.comments.length > 1 && (
@@ -205,7 +216,13 @@ const Moment: React.FC<MomentProps> = ({
                           </p>
                         </div>
                         <p>{comment.text}</p>
-                        <p className={styles.moment__link}>
+                        <p
+                          onClick={() =>
+                            moment.comments &&
+                            onCommentLikeListClick(comment.id)
+                          }
+                          className={styles.moment__link}
+                        >
                           Нравится: {comment.likes.length}
                         </p>
                         {index + 2 == moment.comments?.length && (
