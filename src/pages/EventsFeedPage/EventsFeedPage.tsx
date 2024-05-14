@@ -19,10 +19,12 @@ const EventsFeedPage = () => {
   const [ratedUsers, setRatedUsers] = useState<RecUsersSubscriptions[]>([]);
   const [isUserListOpened, setIsUserListOpened] = useState(false);
 
-  const getMoments = async () => {
+  const getMoments = async (receivedOffset?: number) => {
     try {
       const response = await axios(
-        `http://localhost:8000/api/moments?offset=${offset}&limit=5`,
+        `http://localhost:8000/api/moments?offset=${
+          receivedOffset !== undefined ? receivedOffset : offset
+        }&limit=5`,
         {
           withCredentials: true,
         }
@@ -35,6 +37,31 @@ const EventsFeedPage = () => {
       if (response.data.length < 5) {
         setHasMore(false);
       }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getDetailedMoment = async (id: number) => {
+    try {
+      const response = await axios(
+        `http://localhost:8000/api/moments/detailed?id=${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      let momentData = {
+        ...response.data.moment,
+      };
+
+      setMoments((prevMoments) =>
+        prevMoments.map((moment: RecMomentsData) => {
+          return moment.id === id ? momentData : moment;
+        })
+      );
+
+      console.log(momentData);
     } catch (error) {
       throw error;
     }
@@ -149,8 +176,8 @@ const EventsFeedPage = () => {
         await makeLike(undefined, comment_id);
       }
     }
-    if (currentMoment) {
-      getMoments();
+    if (currentMoment && moment_id) {
+      getDetailedMoment(moment_id);
     }
   };
 
@@ -163,7 +190,7 @@ const EventsFeedPage = () => {
   const handleSendCommentClick = async (moment_id: number) => {
     if (commentValue) {
       await leaveComment(moment_id);
-      getMoments();
+      getDetailedMoment(moment_id);
     }
     setCommentValue("");
   };
@@ -173,9 +200,9 @@ const EventsFeedPage = () => {
     setIsUserListOpened(true);
   };
 
-  // useEffect(() => {
-  //   getMoments();
-  // }, []);
+  useEffect(() => {
+    getMoments();
+  }, []);
 
   return (
     <div className={styles.events__page}>

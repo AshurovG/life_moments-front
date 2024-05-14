@@ -56,21 +56,23 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     }
   };
 
-  const getDetailedUserInfo = async (id: number) => {
+  const getDetailedMoment = async (id: number) => {
     try {
       const response = await axios(
-        `http://localhost:8000/api/user/detailed?id=${id}`,
+        `http://localhost:8000/api/moments/detailed?id=${id}`,
         {
           withCredentials: true,
         }
       );
 
-      setMoments(response.data.moments);
-      setSubscribers(response.data.subscribers);
-      setSubscriptions(response.data.subscriptions);
-      setCurrentUser(response.data.user);
+      let momentData = {
+        ...response.data.moment,
+        likes: response.data.likes,
+        comments: response.data.comments,
+        tags: response.data.tags,
+      };
 
-      console.log(response);
+      console.log(momentData);
     } catch (error) {
       throw error;
     }
@@ -127,7 +129,7 @@ const HomePage: React.FC<{ isAuthUser?: boolean }> = ({ isAuthUser }) => {
     } finally {
       check();
       if (currentUser) {
-        getDetailedUserInfo(currentUser?.id);
+        // getDetailedUserInfo(currentUser?.id);
       }
     }
   };
