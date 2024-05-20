@@ -28,4 +28,22 @@
   &-actions {
     width: 25%;
   }
+
+  &-users {
+    width: 50vw;
+    height: 100vh;
+    background-color: #fff;
+    padding: 50px 30px 0 30px;
+    position: relative;
+
+    &-modal {
+      padding: 30px;
+    }
+
+    &-icon {
+      position: absolute;
+      top: 50px;
+      left: 30px;
+    }
+  }
 }

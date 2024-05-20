@@ -5,6 +5,10 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { setUserInfoAction, useUserInfo } from "slices/UserSlice";
+import {
+  setActionsSubscriptionsAction,
+  setActionsLikesAction,
+} from "slices/ActionsSlice";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import LoginPage from "pages/LoginPage";
@@ -23,11 +27,25 @@ function App() {
   const check = async () => {
     try {
       const response = await axios("http://localhost:8000/api/user/info", {
-        method: "GET",
         withCredentials: true,
       });
       dispatch(setUserInfoAction(response.data));
       setIsUserInfoLoading(false);
+      console.log(response.data);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getActions = async () => {
+    try {
+      const response = await axios("http://localhost:8000/api/user/actions", {
+        withCredentials: true,
+      });
+
+      dispatch(setActionsSubscriptionsAction(response.data.subscriptions));
+      dispatch(setActionsLikesAction(response.data.likes));
+
       console.log(response.data);
     } catch (error) {
       throw error;
@@ -39,6 +57,9 @@ function App() {
       setIsUserInfoLoading(false);
     } else {
       check();
+    }
+    if (userInfo) {
+      getActions();
     }
   }, [userInfo?.username]);
 

@@ -81,7 +81,7 @@ const Moment: React.FC<MomentProps> = ({
         {moment.tags && (
           <div className={styles.moment__tags}>
             {moment.tags.map((tag) => (
-              <p>#{tag.title}</p>
+              <p>{tag}</p>
             ))}
           </div>
         )}

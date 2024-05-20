@@ -50,7 +50,7 @@ export type RecMomentsData = {
   author?: RecUsersSubscriptions;
   likes?: number[];
   comments?: RecCommentsData[];
-  tags?: TagData[];
+  tags?: string[];
 };
 
 export type RecSubscriptionsData = {
@@ -79,6 +79,24 @@ export type CreatedMomentData = {
   title: string;
   description?: string;
   image: File;
+};
+
+export type SimpleMoment = {
+  id: number;
+  image: string;
+};
+
+// Тип для недавних событий - подписок
+export type ActionsSubscription = {
+  subscription: RecSubscriptionsData;
+  user: RecUsersSubscriptions;
+};
+
+// Тип для недавних событий - лайков
+export type ActionsLike = {
+  like: RecLikesData;
+  user: RecUsersSubscriptions;
+  moment: SimpleMoment;
 };
 
 export type SubscriptionData = {

@@ -8,6 +8,7 @@ import UsersList from "components/UsersList";
 import { RecMomentsData, RecUsersSubscriptions } from "../../types";
 import { mockUsers } from "../../consts";
 import BackIcon from "components/Icons/BackIcon";
+import ModalWindow from "components/ModalWindow";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const EventsFeedPage = () => {
@@ -226,8 +227,8 @@ const EventsFeedPage = () => {
                   // onCommentLikeListClick={handleCommentLikesClick} // TODO Обработать
                   onCommentLikeListClick={() => {}}
                 />
-                {isUserListOpened && ( //TODO передалать список лайков
-                  <div className={styles.gallery__users}>
+                {/* {isUserListOpened && ( //TODO передалать список лайков
+                  <div className={styles["events__page-users"]}>
                     <BackIcon
                       onClick={() => setIsUserListOpened(false)}
                       className={styles["gallery__users-icon"]}
@@ -240,7 +241,7 @@ const EventsFeedPage = () => {
                       }}
                     />
                   </div>
-                )}
+                )} */}
               </div>
             ))}
           </InfiniteScroll>
@@ -286,6 +287,25 @@ const EventsFeedPage = () => {
           />
         </div>
       </div>
+      <ModalWindow
+        active={isUserListOpened}
+        handleBackdropClick={() => setIsUserListOpened(false)}
+        className={styles["events__page-users-modal"]}
+      >
+        <div className={styles["events__page-users"]}>
+          <BackIcon
+            onClick={() => setIsUserListOpened(false)}
+            className={styles["events__page-users-icon"]}
+          />
+          <UsersList
+            title="Отметки нравится"
+            users={ratedUsers}
+            onUserClick={() => {
+              setIsUserListOpened(false);
+            }}
+          />
+        </div>
+      </ModalWindow>
     </div>
   );
 };
